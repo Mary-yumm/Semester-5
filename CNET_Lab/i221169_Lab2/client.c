@@ -20,13 +20,16 @@ int main(){
    connect(client_sock, (struct sockaddr*)&client_address,sizeof(client_address));
    //send
    while(1){
-  scanf("%s", client_msg);
+    fgets(client_msg,sizeof(client_msg),stdin);
+    if(strcmp(client_msg,"bye\n")==0){
+        break;
+    }
+
+    int len = sizeof(client_address);
+
    send(client_sock,client_msg,sizeof(client_msg),0);
    recv(client_sock, buff, sizeof(buff),0);
-   if(!strcmp(buff,"exit")){
-   send(client_sock,buff,sizeof(buff),0);
-   break;
-   }
+ 
    printf("\n%s \n" , buff);
    }
    close(client_sock);
