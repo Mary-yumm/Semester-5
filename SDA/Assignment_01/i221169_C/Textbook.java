@@ -4,12 +4,12 @@ public class Textbook extends Book implements Loanable{
 
     private final double cost;
     {
-        this.cost = 1.0;
+        this.cost = 2.0;
     }
     private static final double BASE_FEE = 10.0;
 
     Textbook(String id, String title, String author, String ISBN, int year, String genre, boolean loan_status,double base_loan_fee) {
-        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,true);
+        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,true,true);
 
     }
 
@@ -41,6 +41,7 @@ public class Textbook extends Book implements Loanable{
 
     @Override
     public double calculateLoanFee(int days) {
+        //System.out.println("in calc loan textbook ftn" + BASE_FEE + (days * cost));
         return BASE_FEE + (days * cost);
     }
 

@@ -85,7 +85,7 @@ public abstract class User {
         System.out.println("\nLoaned Books:\n");
         for(Book book : Loaned_books) {
             //book.print_info();
-            System.out.println(count+") "+book.getBookId() + "\n" + book.getTitle() +"\n");
+            System.out.println(count+") "+book.getBookId() + ") " + book.getTitle() +" , Loan: " + book.getCurrent_loan());
             count++;
         }
 
@@ -106,6 +106,7 @@ public abstract class User {
         System.out.println("Phone number: " + phone_number);
         System.out.println("Address: " + address);
         System.out.println("Total Loan Fees: " + loan_fees);
+
         print_LoanedBooks();
     }
 }

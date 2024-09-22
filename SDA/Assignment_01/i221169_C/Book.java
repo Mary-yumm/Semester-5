@@ -1,5 +1,7 @@
 package LibraryManagement;
 
+import java.util.Scanner;
+
 public abstract class Book {
     private String id;
     private String title;
@@ -10,8 +12,9 @@ public abstract class Book {
     private boolean is_loaned;
     private boolean extension;
     private double current_loan=0.0;
-    private int days_loan=14;
-    Book(String id, String title, String author, String ISBN, int year, String genre, boolean loan_status,double base_loan_fee,boolean extension) {
+    private boolean loanable;
+    private int days_loan;
+    Book(String id, String title, String author, String ISBN, int year, String genre, boolean loan_status,double base_loan_fee,boolean extension,boolean loanable) {
         setBookId(id);
         setTitle(title);
         setAuthor(author);
@@ -19,9 +22,21 @@ public abstract class Book {
         setYear(year);
         setGenre(genre);
         setExtension(extension);
+        set_loanable(loanable);
+        days_loan=14;
     }
 
+
     //getters and setters
+    public void set_loanable(boolean is_loanable) {
+        loanable=is_loanable;
+    }
+    public void set_days_loan(int days_loan) {
+        this.days_loan=days_loan;
+    }
+    public boolean get_loanable(){
+        return loanable;
+    }
     public int getDays_loan() {
         return days_loan;
     }
@@ -103,6 +118,7 @@ public abstract class Book {
         System.out.println("Genre: " + genre);
         System.out.println("Extension: " + extension);
         System.out.println("Loaned? " + is_loaned);
+        System.out.println("Loanable? "+ loanable);
 
     }
 

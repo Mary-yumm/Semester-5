@@ -3,7 +3,7 @@ package LibraryManagement;
 public class ReferenceBook extends Book{
 
     ReferenceBook(String id, String title, String author, String ISBN, int year, String genre, boolean loan_status,double base_loan_fee) {
-        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,false);
+        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,false,false);
     }
 
     @Override

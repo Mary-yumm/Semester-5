@@ -11,7 +11,7 @@ public class Novel extends Book implements Loanable{
         this.FLAT_RATE=5.0;
     }
     Novel(String id, String title, String author, String ISBN, int year, String genre, boolean loan_status,double base_loan_fee) {
-        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,false);
+        super(id, title, author, ISBN, year, genre, loan_status,base_loan_fee,false,true);
     }
 
     @Override
