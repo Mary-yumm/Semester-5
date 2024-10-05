@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" version="24.7.17">
+  <diagram name="Page-1" id="ZDMo8hOZdNc1IYuTc-Ew">
+    <mxGraphModel dx="1434" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="225" y="50" width="400" height="980" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-3" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="110" width="80" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-4" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="180" width="80" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-6" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="450" width="80" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-7" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="120" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-9" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="240" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-10" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="340" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-11" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="430" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-12" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="540" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-13" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="660" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-14" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="760" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="iRMOS1hqpjtrKJWi4sfP-15" value="Use Case" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="850" width="140" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
