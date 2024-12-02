@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.MonitorActiveSystemsController">
+
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text" text="Monitor Polling Systems" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+        <!-- ImageView with hand cursor on hover -->
+        <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../assets/back-arrow.png" />
+        </ImageView>
+
+
+    </AnchorPane>
+    <HBox spacing="10.0" />
+
+    <ScrollPane fitToWidth="true" layoutX="120.0" layoutY="286.0" prefHeight="466.0" prefWidth="1260.0" AnchorPane.bottomAnchor="83.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="286.0" styleClass="custom-scroll-pane">
+        <VBox fx:id="systemTable" spacing="10.0">
+            <!-- Table Headers -->
+            <HBox spacing="100.0" styleClass="table-header">
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" styleClass="table-header-cell" text="System ID" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 0 30" styleClass="table-header-cell" text="Station ID" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 0 50" styleClass="table-header-cell" text="Status" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 0 70" styleClass="table-header-cell" text="Config" />
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 0 100" styleClass="table-header-cell" text="Area Name" />
+            </HBox>
+            <!-- System rows will be dynamically added here by the controller -->
+        </VBox>
+    </ScrollPane>
+      <ComboBox fx:id="status" layoutX="676.0" layoutY="201.0" prefHeight="32.0" prefWidth="301.0" styleClass="combo-box" />
+      <Label layoutX="555.0" layoutY="208.0" prefHeight="32.0" prefWidth="90.0" styleClass="label" text="Status" />
+
+
+</AnchorPane>

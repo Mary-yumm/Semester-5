@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.UpdateDeactiveStaffController">
+   <children>
+      <!-- Title Bar -->
+      <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <Label styleClass="title-bar-text" text="Manage Polling Staff Account" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+         <!-- ImageView with hand cursor on hover -->
+         <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../assets/back-arrow.png" />
+         </ImageView>
+
+
+      </AnchorPane>
+      <VBox layoutX="386.0" layoutY="259.0" prefHeight="402.0" prefWidth="726.0" spacing="20.0" style="-fx-background-color: #e1e1e1;" styleClass="form-section" AnchorPane.leftAnchor="386.0" AnchorPane.topAnchor="259.0">
+         <children>
+            <HBox spacing="10.0" />
+            <Label text="Update Polling Staff" textFill="#e1e1e1" />
+            <HBox prefHeight="45.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="358.0" styleClass="label" text="           Username:" />
+                  <TextField fx:id="username" styleClass="text-field" />
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="360.0" styleClass="label" text="           Password:" />
+                  <TextField fx:id="password" styleClass="text-field" />
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="422.0" spacing="10.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="359.0" styleClass="label" text="           Station Id: " />
+                  <ComboBox fx:id="stationid" prefHeight="32.0" prefWidth="301.0" styleClass="combo-box" />
+               </children>
+            </HBox>
+            <HBox spacing="10.0" />
+            <HBox spacing="10.0" />
+            <HBox spacing="10.0" />
+            <Button fx:id="updateAccount" onAction="#UpdateAccount" prefHeight="45.0" prefWidth="246.0" styleClass="submit-button" text="Update Account" />
+         </children>
+      </VBox>
+      <Button fx:id="deactivateAccount" layoutX="1152.0" layoutY="178.0" onAction="#deactivateAccount" prefHeight="45.0" prefWidth="275.0" styleClass="submit-button" text="Deactivate Account" />
+      <Label layoutX="181.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="275.0" text="Select Staff member:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="staffId" layoutX="475.0" layoutY="146.0" prefHeight="32.0" prefWidth="153.0" />
+      <Button fx:id="ActivateAccount" layoutX="1152.0" layoutY="126.0" onAction="#activateAccount" prefHeight="45.0" prefWidth="275.0" styleClass="submit-button" text="Activate Account" />
+   </children>
+</AnchorPane>

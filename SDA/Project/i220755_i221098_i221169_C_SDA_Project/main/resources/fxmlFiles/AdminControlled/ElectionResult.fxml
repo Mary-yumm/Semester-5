@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" prefHeight="835.0" prefWidth="1500.0" spacing="20" style="-fx-background-color: #385B4F;" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.ElectionResultController">
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text" text="Election Results" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+        <!-- ImageView with hand cursor on hover -->
+        <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../assets/back-arrow.png" />
+        </ImageView>
+
+    </AnchorPane>
+    <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" style="-fx-background-color: #FFFFFF;">
+        <children>
+            <ChoiceBox fx:id="napa" layoutX="1122.0" layoutY="14.0" onMouseClicked="#hanlderdropdown" prefHeight="35.0" prefWidth="288.0" styleClass="combo-box" />
+            <Label layoutX="142.0" layoutY="28.0" prefHeight="30.0" prefWidth="191.0" text="Election Date:" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+            </Label>
+            <Text layoutX="57.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <AnchorPane layoutX="120.0" layoutY="230.0" prefHeight="557.0" prefWidth="1260.0">
+                <children>
+                    <TableView fx:id="Table" layoutX="120" layoutY="230" prefHeight="475.0" prefWidth="1260.0" styleClass="custom-scroll-pane" AnchorPane.rightAnchor="181.0" AnchorPane.topAnchor="-5.0">
+                        <columns>
+                            <TableColumn fx:id="areacol" prefWidth="250.0" text="Area Name" />
+                            <TableColumn fx:id="candcol" prefWidth="400.0" text="Candidate Name" />
+                            <TableColumn fx:id="partycol" prefWidth="400.0" text="Party Name" />
+                            <TableColumn fx:id="countcol" prefWidth="189.60009765625" text="Vote Count" />
+                        </columns>
+                    </TableView>
+                </children>
+            </AnchorPane>
+            <Label layoutX="847.0" layoutY="28.0" text="National / Provisional" />
+            <Button fx:id="AreaSearch" layoutX="163.0" layoutY="157.0" mnemonicParsing="false" onMouseClicked="#handleAreaSearch" prefHeight="28.0" prefWidth="264.0" style="-fx-background-color: #385b4f;" styleClass="submit-button" text="Search By Area" />
+            <Button fx:id="CandSearch" layoutX="606.0" layoutY="157.0" mnemonicParsing="false" onMouseClicked="#handleCandSearch" prefHeight="45.0" prefWidth="288.0" style="-fx-background-color: #385b4f;" styleClass="submit-button" text="Search By Candidate" />
+            <Button fx:id="PartySearch" layoutX="1065.0" layoutY="157.0" mnemonicParsing="false" onMouseClicked="#handlePartySearch" prefHeight="27.0" prefWidth="264.0" style="-fx-background-color: #385b4f;" styleClass="submit-button" text="Search By Party" />
+            <TextField fx:id="PartyName" layoutX="1022.0" layoutY="88.0" prefHeight="26.0" prefWidth="264.0" promptText="Party Name" />
+            <TextField fx:id="CandName" layoutX="575.0" layoutY="88.0" prefHeight="26.0" prefWidth="264.0" promptText="Candidate Name" />
+            <TextField fx:id="AreaName" layoutX="120.0" layoutY="88.0" prefHeight="26.0" prefWidth="264.0" promptText="Area Name" />
+            <Label fx:id="datee" layoutX="322.0" layoutY="28.0" text="Dec 1,2024" />
+
+        </children>
+    </Pane>
+    <HBox prefHeight="4.0" prefWidth="536.0" style="-fx-background-color: #385B4F;" />
+</VBox>

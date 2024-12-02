@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="858.0" prefWidth="1500.0" style="-fx-background-color: #ffffff;" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.PollingPC.InitiateSystemController">
+   <children>
+      <!-- Title Bar -->
+      <!-- Title Bar -->
+      <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <Label styleClass="title-bar-text" text="E-Voting System" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+
+
+      </AnchorPane>
+      <!-- Logo Image (Bigger Size) -->
+      <ImageView fx:id="logoImageView" fitHeight="500.0" fitWidth="500.0" layoutX="509.0" layoutY="100.0">
+         <image>
+            <Image url="@../../assets/logo.png" />
+         </image>
+      </ImageView>
+
+
+
+      <!-- Timer Label -->
+      <Label id="timerLabel" fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" text="Timer" textFill="#385B4F" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0">
+         <font>
+            <Font name="SansSerif Regular" size="40.0" />
+         </font>
+      </Label>
+
+      <!-- Message Label -->
+      <Label id="messageLabel" fx:id="messageLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="600.0" text="System is initializing. Please wait..." textFill="#385B4F" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="600.0">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+
+      <!-- Loading icon -->
+      <ProgressIndicator fx:id="loadingIndicator" progress="-1.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="700.0" />
+
+   </children>
+</AnchorPane>

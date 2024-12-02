@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="contentpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AboutController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#385b4f" height="835.0" stroke="BLACK" strokeType="INSIDE" width="1500.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="751.0" layoutX="44.0" layoutY="45.0" stroke="WHITE" strokeWidth="0.0" width="1418.0" />
+        <ImageView fitHeight="134.0" fitWidth="211.0" layoutX="96.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/VotixCompanyLogo2.png" />
+            </image>
+        </ImageView>
+        <VBox layoutX="79.0" layoutY="231.0" minWidth="-Infinity" prefHeight="494.0" prefWidth="1348.0" spacing="10.0">
+            <children>
+                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #e72f2f;" text="About Votix Election Management System" />
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">Votix is committed to revolutionizing the electoral process through innovative technology, ensuring secure, transparent, and efficient elections for all. Our goal is to provide a platform that builds trust in democratic systems and simplifies the voting experience.</Text>
+                </TextFlow>
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #37594d;" text="Features" />
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">1. Biometric Verification: Ensures voter authenticity by utilizing state-of-the-art biometric verification methods.</Text>
+                </TextFlow>
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">2. Seamless Voting Process: Provides an intuitive and user-friendly interface for casting votes, reducing errors and delays.</Text>
+                </TextFlow>
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">3. Real-time Results: Offers live updates and accurate vote counting to ensure prompt result announcements.</Text>
+                </TextFlow>
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">4. Data Security: Implements robust encryption and cybersecurity measures to safeguard election data from unauthorized access.</Text>
+                </TextFlow>
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">5. Multi-Language Support: Includes language preferences and audio instructions to make the system accessible to diverse populations.</Text>
+                </TextFlow>
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #37594d;" text="Our Vision for the Future" />
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;">Votix envisions a future where elections are free from fraud and logistical challenges. By leveraging technology, we aim to empower democratic institutions and ensure every vote counts.</Text>
+                </TextFlow>
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #37594d;" text="Our Team" />
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;"> Arrij Fawad I220755</Text>
+                </TextFlow>
+                <TextFlow>
+                    <Text style="-fx-font-size: 16px; -fx-fill: black;"> Hamna Arshad I221098</Text>
+                </TextFlow>
+                <TextFlow>
+                 <Text style="-fx-font-size: 16px; -fx-fill: black;"> Maryam Masood I221169</Text>
+                </TextFlow>
+            </children>
+        </VBox>
+      <ImageView fitHeight="159.0" fitWidth="845.0" layoutX="331.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/ems.png" />
+         </image>
+      </ImageView>
+        <Button fx:id="BackButton" layoutX="1332.0" layoutY="160.0" onMouseClicked="#HandleBackButtonAction" prefHeight="37.0" prefWidth="80.0" style="-fx-background-color: #e72f2f; -fx-text-fill: white; -fx-font-size: 16px;" text="Back" />
+      <Rectangle fx:id="bg" arcHeight="50.0" arcWidth="50.0" fill="#37594d30" height="565.0" layoutX="48.0" layoutY="210.0" stroke="WHITE" strokeType="INSIDE" width="1409.0" />
+
+    </children>
+
+</AnchorPane>

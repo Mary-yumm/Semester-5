@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="858.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.staffAssignmentsController">
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text" text="View Staff Assignments" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+        <!-- ImageView with hand cursor on hover -->
+        <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../assets/back-arrow.png" />
+        </ImageView>
+
+
+    </AnchorPane>
+    <ScrollPane fitToWidth="true" layoutX="294.0" layoutY="241.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="1000.0" styleClass="custom-scroll-pane" AnchorPane.bottomAnchor="123.79999999999995" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.20000000000005" AnchorPane.topAnchor="241.0">
+        <VBox fx:id="staffTable" prefWidth="1100.0" spacing="10">
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="1177.0" spacing="15.0" styleClass="table-header">
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="202.0" styleClass="table-header-cell" text="Staff ID" />
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="264.0" styleClass="table-header-cell" text="Staff Name" />
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="209.0" styleClass="table-header-cell" text="Area ID" />
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="195.0" styleClass="table-header-cell" text="Area Name" />
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="table-header-cell" text="Station ID" />
+            </HBox>
+        </VBox>
+    </ScrollPane>
+
+
+    <ComboBox fx:id="area" layoutX="1100.0" layoutY="174.0" onAction="#searchByArea" prefHeight="30.0" prefWidth="191.0" />
+    <Label layoutX="904.0" layoutY="181.0" text="Search by Area" />
+    <Label layoutX="150.0" layoutY="181.0" text="Search by name:" />
+    <TextField fx:id="name" layoutX="375.0" layoutY="175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="200.0" />
+    <Button fx:id="searchbtn" layoutX="743.0" layoutY="174.0" mnemonicParsing="false" onAction="#searchByStaff" prefHeight="45.0" prefWidth="128.0" styleClass="submit-button" text="Search" />
+    <Button fx:id="removeFilter" layoutX="1146.0" layoutY="767.0" mnemonicParsing="false" onAction="#removeFilter" prefHeight="45.0" prefWidth="204.0" styleClass="submit-button" text="Remove Filter" />
+
+    <VBox fx:id="candidateTable" layoutX="10.0" layoutY="10.0" spacing="10" />
+
+</AnchorPane>

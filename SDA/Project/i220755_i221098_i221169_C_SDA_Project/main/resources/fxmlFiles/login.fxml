@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.LoginController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#385b4f" height="835.0" stroke="BLACK" strokeType="INSIDE" width="1500.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="679.0" layoutX="62.0" layoutY="78.0" onMouseClicked="#handleLogin" stroke="WHITE" strokeWidth="0.0" width="1370.0" />
+      <ImageView fitHeight="392.0" fitWidth="520.0" layoutX="126.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/VotixCompanyLogo2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="159.0" fitWidth="845.0" layoutX="316.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/ems.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="bg" arcHeight="50.0" arcWidth="50.0" fill="#37594d30" height="421.0" layoutX="794.0" layoutY="267.0" stroke="WHITE" strokeType="INSIDE" width="520.0" />
+      <Group layoutX="708.0" layoutY="270.0">
+         <children>
+
+            <!-- Username input field -->
+            <TextField fx:id="usernameField" layoutX="210.0" layoutY="186.0" maxWidth="250.0" prefWidth="250.0" promptText="Username" style="-fx-padding: 5px 10px; -fx-font-size: 14px; -fx-height: 30px;" />
+
+            <!-- Password input field -->
+            <PasswordField fx:id="passwordField" layoutX="210.0" layoutY="239.0" maxWidth="250.0" prefWidth="250.0" promptText="Password" style="-fx-padding: 5px 10px; -fx-font-size: 14px; -fx-height: 30px;" />
+
+            <!-- Login Button -->
+            <Button fx:id="LoginButton" layoutX="210.0" layoutY="337.0" onMouseClicked="#handleLogin" prefHeight="40.0" prefWidth="250.0" style="-fx-background-radius: 25; -fx-background-color: linear-gradient(to bottom, #385B4F, #2c473d); -fx-text-fill: white; -fx-font-size: 24px; -fx-font-family: 'Century Gothic Bold Italic';" styleClass="login-button" text="Login" textAlignment="CENTER">
+               <font>
+                  <Font name="Century Gothic Bold" size="24.0" />
+               </font>
+            </Button>
+            <Text fill="#000000a8" layoutX="169.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Your Login Credentials" wrappingWidth="330.9366455078125">
+               <font>
+                  <Font name="Century Gothic Bold" size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </Group>
+      <Button fx:id="backButton" layoutX="1274.0" layoutY="193.0" onMouseClicked="#handleBackButtonAction" prefHeight="37.0" prefWidth="80.0" style="-fx-background-color: #e72f2f; -fx-text-fill: white; -fx-font-size: 16px;" text="Back" />
+   </children>
+</AnchorPane>

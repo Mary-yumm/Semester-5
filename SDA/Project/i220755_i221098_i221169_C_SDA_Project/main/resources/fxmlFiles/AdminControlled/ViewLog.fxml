@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.ViewLogsController">
+
+   <!-- Title Bar -->
+   <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label styleClass="title-bar-text" text="View Logs" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+      <!-- ImageView with hand cursor on hover -->
+      <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+         <Image url="@../../assets/back-arrow.png" />
+      </ImageView>
+
+
+   </AnchorPane>
+
+   <!-- Scrollable Content for Logs -->
+   <ScrollPane fitToWidth="true" layoutX="120.0" layoutY="286.0" prefHeight="466.0" prefWidth="1260.0" styleClass="custom-scroll-pane" AnchorPane.bottomAnchor="83.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="286.0" >
+      <VBox fx:id="logTable" spacing="10">
+         <!-- Table Headers -->
+         <HBox spacing="400.0" styleClass="table-header">
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" styleClass="table-header-cell" text="Log ID" />
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" styleClass="table-header-cell" text="Action" />
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" styleClass="table-header-cell" text="Time Stamp" />
+         </HBox>
+         <!-- Log rows will be dynamically added here by the controller -->
+      </VBox>
+   </ScrollPane>
+
+
+   <!-- Filter by log action -->
+   <TextField fx:id="filterTextField" layoutX="123.0" layoutY="121.0" prefHeight="47.0" prefWidth="400.0" promptText="Enter log filter" styleClass="custom-text-field">
+      <font>
+         <Font size="5.0" />
+      </font>
+   </TextField>
+   <Button layoutX="512.0" layoutY="123.0" onAction="#filterLogs" styleClass="submit-button" text="Filter by Action" />
+   <Button fx:id="pollingStation" layoutX="1197.0" layoutY="221.0" onAction="#applyFiltersPollingStation" styleClass="submit-button" text="Apply Filter" />
+   <TextField fx:id="pollingStationFilterTextField" layoutX="832.0" layoutY="220.0" prefHeight="47.0" prefWidth="230.0" promptText="Filter by Polling Station ID" styleClass="custom-text-field">
+      <font>
+         <Font size="5.0" />
+      </font>
+   </TextField>
+   <TextField fx:id="areaFilterTextField" layoutX="120.0" layoutY="217.0" prefHeight="47.0" prefWidth="400.0" promptText="Filter by Area ID" styleClass="custom-text-field">
+      <font>
+         <Font size="5.0" />
+      </font>
+   </TextField>
+   <Button fx:id="Area" layoutX="533.0" layoutY="221.0" onAction="#applyFiltersArea" styleClass="submit-button" text="Apply Filter" />
+   <Button fx:id="removeFilter" layoutX="1184.0" layoutY="776.0" onAction="#removeFilter" styleClass="submit-button" text="Remove Filter" />
+
+</AnchorPane>

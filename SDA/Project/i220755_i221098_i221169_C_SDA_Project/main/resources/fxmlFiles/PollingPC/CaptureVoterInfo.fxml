@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="votix.controllers.PollingPC.CaptureVoterInfoController"
+            stylesheets="@../../style/style.css"
+            prefWidth="1920.0"
+            styleClass="root">
+
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text"
+               text="Capture Voter Information"
+               AnchorPane.leftAnchor="50.0"
+               AnchorPane.rightAnchor="50.0"
+               AnchorPane.topAnchor="0.0"
+               AnchorPane.bottomAnchor="0.0" />
+    </AnchorPane>
+
+    <!-- Form Section -->
+    <VBox styleClass="form-section" spacing="20.0" AnchorPane.topAnchor="400.0" AnchorPane.leftAnchor="605.0" >
+        <!-- Voter's Name Input -->
+        <HBox spacing="10.0">
+            <Label text="Enter voter's name: " styleClass="label"/>
+            <TextField fx:id="nameTextField" styleClass="text-field"/>
+        </HBox>
+
+        <!-- Voter's CNIC Input -->
+        <HBox spacing="10.0">
+            <Label text="Enter voter's CNIC: " styleClass="label"/>
+            <TextField fx:id="cnicTextField" styleClass="text-field"/>
+        </HBox>
+
+        <!-- Submit Button -->
+        <Button text="Submit" fx:id="submitButton" onAction="#handleSubmit" styleClass="submit-button"/>
+    </VBox>
+
+    <!-- Biometric Instruction Label (hidden initially) -->
+    <Label fx:id="biometricInstructionLabel" text="Please place your finger on the biometric scanner."
+           styleClass="biometricInstructionLabel" visible="false" AnchorPane.topAnchor="700.0" AnchorPane.leftAnchor="650.0"/>
+</AnchorPane>

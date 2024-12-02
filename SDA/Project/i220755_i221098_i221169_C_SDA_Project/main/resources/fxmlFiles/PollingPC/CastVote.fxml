@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="1024.0" prefWidth="1280.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.PollingPC.CastVoteController">
+
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text" text="Cast Vote" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+    </AnchorPane>
+    <!-- Voter Information Section (Right-Aligned) -->
+    <VBox spacing="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
+        <Label fx:id="voterNameLabel" style="-fx-font-size: 18px;" styleClass="info-label" text="Voter Name: [Name]" AnchorPane.rightAnchor="10.0" />
+        <Label fx:id="voterCnicLabel" style="-fx-font-size: 18px;" styleClass="info-label" text="CNIC: [CNIC]" AnchorPane.rightAnchor="10.0" />
+    </VBox>
+
+    <!-- Instructions for Voting -->
+    <Label style="-fx-font-size: 14px; -fx-text-fill: #333333;" styleClass="instructions-label" text="Instructions: Select the checkbox next to the candidate you wish to vote for." AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="220.0" />
+
+
+    <!-- Candidate Table within a ScrollPane to prevent overlap -->
+    <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="250.0">
+        <ScrollPane fitToWidth="true" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" styleClass="custom-scroll-pane">
+            <VBox fx:id="candidateTable" spacing="10.0">
+                <!-- Table Headers -->
+                <HBox spacing="80.0" styleClass="table-header">
+                    <Label styleClass="table-header-cell" text="Candidate Name" />
+                    <Label style="-fx-padding: 0 0 0 80;" styleClass="table-header-cell" text="Party Name" />
+                    <Label style="-fx-padding: 0 0 0 80;" styleClass="table-header-cell" text="Party Symbol" />
+                    <Label style="-fx-padding: 0 0 0 10;" styleClass="table-header-cell" text="Select" />
+                </HBox>
+                <!-- Candidate rows will be dynamically added here by the controller -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- Submit Button, positioned at the bottom of the screen near the table -->
+    <Button fx:id="submitButton" layoutX="602.0" layoutY="916.0" onAction="#handleSubmit" styleClass="submit-button" text="Submit" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="602.0" />
+
+</AnchorPane>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="votix.controllers.AdminControllers.addCandidateController">
+
+    <!-- Title Bar -->
+    <AnchorPane prefHeight="100.0" styleClass="title-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="title-bar-text" text="Add Candidate" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0" />
+        <!-- ImageView with hand cursor on hover -->
+        <ImageView fx:id="backArrow" fitHeight="56.0" fitWidth="56.0" layoutX="50.0" layoutY="23.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../assets/back-arrow.png" />
+        </ImageView>
+
+
+    </AnchorPane>
+
+    <!-- Form Section -->
+    <VBox layoutX="430.0" layoutY="150.0" prefHeight="593.0" prefWidth="674.0" spacing="20.0" styleClass="form-section" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="150.0">
+        <HBox spacing="10.0">
+            <children>
+                <Label styleClass="label" text="Candidate Id         " textOverrun="CLIP" />
+                <TextField fx:id="cid" prefHeight="46.0" prefWidth="200.0" />
+            </children>
+        </HBox>
+        <HBox spacing="10.0">
+            <Label styleClass="label" text="Candidate Name   " />
+            <TextField fx:id="cname" prefHeight="46.0" prefWidth="200.0" />
+        </HBox>
+
+        <HBox prefHeight="45.0" prefWidth="422.0" spacing="10.0">
+            <Label styleClass="label" text="Age                       " textOverrun="CLIP" />
+            <TextField fx:id="age" styleClass="text-field" />
+        </HBox>
+
+        <HBox spacing="10.0">
+            <Label styleClass="label" text="CNIC                      " textOverrun="CLIP" />
+            <TextField fx:id="cnic" styleClass="text-field" />
+        </HBox>
+      <HBox spacing="10.0">
+         <children>
+            <Label prefHeight="32.0" prefWidth="233.0" styleClass="label" text="Area ID" />
+            <ComboBox fx:id="area" prefHeight="34.0" prefWidth="300.0" styleClass="combo-box" />
+         </children>
+      </HBox>
+
+        <HBox spacing="10.0">
+            <Label prefHeight="32.0" prefWidth="233.0" styleClass="label" text="Political Party   " />
+            <ComboBox fx:id="politicalparty" prefHeight="34.0" prefWidth="300.0" styleClass="combo-box" />
+        </HBox>
+
+        <HBox spacing="10.0">
+            <Label prefHeight="32.0" prefWidth="231.0" styleClass="label" text="Nationality      " />
+            <ComboBox fx:id="nationality" prefHeight="32.0" prefWidth="301.0" styleClass="combo-box" />
+        </HBox>
+        <HBox spacing="10.0">
+            <children>
+                <Label prefHeight="32.0" prefWidth="231.0" styleClass="label" text="NA/PA      " />
+                <ComboBox fx:id="napa" prefHeight="32.0" prefWidth="301.0" styleClass="combo-box" />
+            </children>
+        </HBox>
+
+        <!-- Submit Button -->
+        <Button fx:id="registerButton" onAction="#AddNewCandidate" prefWidth="200.0" styleClass="submit-button" text="Register" />
+    </VBox>
+
+</AnchorPane>

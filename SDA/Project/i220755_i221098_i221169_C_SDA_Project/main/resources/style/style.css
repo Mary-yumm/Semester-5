@@ -1,0 +1,295 @@
+/* Default Button Styles */
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-padding: 10px 20px;
+}
+
+/* Hover Effect */
+.button:hover {
+    -fx-background-color: #4d7d6c;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 20px;
+}
+
+/* Active (selected) Button Styles */
+.button.selected {
+    -fx-background-color: #8fbaab;
+    -fx-text-fill: #385B4F;
+    -fx-background-radius: 20px;
+}
+
+.title-bar {
+    -fx-background-color: #385B4F; /* Subtle green gradient */
+    -fx-padding: 0;
+    -fx-border-color: #2a4d3c; /* Border for separation */
+    -fx-border-width: 0 0 0 0; /* Bottom border */
+}
+.title-bar-text {
+    -fx-font-family: 'Arial Black', sans-serif;
+    -fx-text-align: center;
+    -fx-font-size: 60px;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.title-bar .title-bar-text {
+    -fx-font-family: 'Arial Black', sans-serif;
+    -fx-text-align: center;
+    -fx-font-size: 60px;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Form Section */
+.form-section {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-padding: 40px;
+    -fx-background-color: #ffffff; /* White card-like background */
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.2, 0, 4); /* Subtle shadow */
+}
+
+/* Label Styling */
+.label {
+    -fx-font-size: 24px; /* Slightly smaller for modern look */
+    -fx-text-fill: #333333; /* Dark gray for readability */
+}
+
+/* TextField Styling */
+.text-field {
+    -fx-font-size: 20px; /* Modern, easy-to-read font */
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-pref-width: 350px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0.1, 0, 2); /* Subtle shadow for depth */
+}
+
+/* Submit Button Styling */
+.submit-button {
+    -fx-background-color: #385B4F; /* Consistent with title bar */
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand; /* Pointer cursor on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.2, 0, 2); /* Shadow for depth */
+}
+
+.submit-button:hover {
+    -fx-background-color: #4d7d6c; /* Slightly brighter green on hover */
+}
+
+/* Additional Spacing for Alignment */
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 30px; /* Add vertical spacing */
+}
+
+
+.login-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #385B4F;
+    -fx-font-size: 18px;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 20px;
+}
+
+/* Biometric Instruction Label */
+#biometricInstructionLabel {
+    -fx-font-size: 24px;
+    -fx-text-fill: #385B4F;
+    -fx-font-style: italic; /* Add emphasis */
+}
+
+/* General Root Styles */
+.root {
+    -fx-font-family: 'Arial', sans-serif;
+    -fx-padding: 0; /* Padding around the entire window */
+    -fx-background-color: #f4f4f4; /* Light gray background for the entire app */
+
+}
+
+/* Instructions Label */
+.instructions-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #333333;
+}
+
+/* Candidate Table Header */
+.table-header {
+    -fx-background-color: #d3d3d3;
+    -fx-padding: 10px;
+}
+
+.table-header-cell {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10 0 10; /* Add padding to the table header labels */
+    -fx-text-fill: #333333; /* Darker text for clarity */
+}
+
+/* Candidate Table Row */
+.table-row {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 0;
+    -fx-spacing: 0;
+}
+
+/* Add hover effect to rows */
+.table-row:hover {
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+
+.table-cell {
+    -fx-border-color: transparent; /* or #ccc or any color */
+    -fx-border-width: 0px;
+    -fx-font-size: 18px;
+    -fx-alignment: center;
+}
+
+.custom-text-field {
+    -fx-prompt-text-fill: gray;
+    -fx-font-size: 14px;
+}
+
+.voted {
+    -fx-text-fill: #2e7d32; /* Subtle green */
+    -fx-background-color: #d7f0d8; /* Light green background */
+    -fx-padding: 3;
+    -fx-background-radius: 5;
+}
+
+.not-voted {
+    -fx-text-fill: #b71c1c; /* Subtle red */
+    -fx-background-color: #fbdcdc; /* Light red background */
+    -fx-padding: 3;
+    -fx-background-radius: 5;
+}
+
+.total-registered {
+    -fx-text-fill: #333333; /* Subtle blue */
+    -fx-background-color: #f4f4f4; /* Light blue background */
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+
+/* Custom ScrollPane Styling */
+.custom-scroll-pane {
+    -fx-border-color: #dcdcdc; /* Light gray border */
+    -fx-border-width: 1;
+    -fx-border-radius: 12; /* Rounded corners */
+    -fx-background-radius: 12;
+    -fx-background-color: #ffffff; /* Pure white background */
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.2, 0, 4); /* Subtle shadow */
+}
+
+
+/* Styling for ScrollBar */
+.custom-scroll-pane .scroll-bar {
+    -fx-padding: 4;
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.custom-scroll-pane .thumb {
+    -fx-background-color: #bdbdbd; /* Subtle thumb color */
+    -fx-background-insets: 2;
+    -fx-background-radius: 4;
+}
+
+.custom-scroll-pane .track {
+    -fx-background-color: #e0e0e0; /* Light track color */
+    -fx-background-insets: 1;
+    -fx-background-radius: 4;
+}
+
+.stats-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Root Popup Styling */
+.error-popup {
+    -fx-background-color: white; /* Clean white background for contrast */
+    -fx-border-color: #385B4F; /* Border matches header */
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px; /* Rounded corners for modern look */
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.2, 0, 4); /* Add shadow for depth */
+}
+
+/* Header Section Styling */
+.error-header {
+    -fx-background-color: #385B4F; /* Deep green header */
+    -fx-border-radius: 10px 10px 0 0; /* Rounded top corners */
+    -fx-padding: 10px;
+}
+
+/* Error Icon */
+.error-icon {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.2, 0, 2); /* Shadow for depth */
+}
+
+/* Message Label Styling */
+.error-message-label {
+    -fx-text-fill: #333333; /* Dark gray for readability */
+    -fx-font-size: 18px; /* Slightly smaller for balance */
+    -fx-padding: 10px;
+    -fx-background-color: #f9f9f9; /* Subtle background */
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ccc; /* Light gray border for separation */
+}
+
+/* Style the ComboBox */
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-background-color: #f0f0f0; /* Light background */
+    -fx-border-color: #ccc; /* Border color */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-padding: 5px; /* Padding inside ComboBox */
+    -fx-pref-width: 250px; /* Preferred width */
+    -fx-background-insets: 0, 1; /* Spacing between ComboBox and its dropdown */
+}
+
+.combo-box .combo-box-popup {
+    -fx-background-color: #ffffff; /* White background for the dropdown */
+    -fx-border-color: #ccc; /* Border color for the dropdown */
+    -fx-border-radius: 5px; /* Rounded corners for the dropdown */
+    -fx-padding: 5px;
+}
+
+.combo-box .list-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 8px; /* Padding inside the items */
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #4d7d6c; /* Hover effect for items */
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: #f0f0f0; /* Custom color for the selected item (change this to your preferred color) */
+    -fx-text-fill: black; /* Ensure text is visible on the selected item */
+}
+
+.combo-box .arrow {
+    -fx-background-color: #385B4F; /* Custom color for the arrow */
+    -fx-background-radius: 3px;
+}
+
