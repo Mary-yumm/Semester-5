@@ -1,0 +1,14 @@
+Feedback ID|Response
+F001|Thank you for your feedback! We're glad you like it.
+F002|Thank you! Happy to hear you're satisfied with the product.
+F003|We're delighted you found it comfortable. Thanks for sharing!
+F004|Thank you! We're glad it meets your expectations.
+F005|Happy to hear it's serving you well! Thanks for your feedback.
+F006|Thank you for your feedback! We'll consider your input on pricing.
+F007|We're thrilled you love its performance. Thanks for letting us know!
+F008|Thanks for the kind words! We're glad you enjoy it.
+F009|Happy to know you're satisfied. Thanks for your feedback!
+F010|Thank you! We're pleased you found it useful.
+F011|Thank you for the compliment! We're glad you're enjoying it.
+F008|okyyy
+F010|okay

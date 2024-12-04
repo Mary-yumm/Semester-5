@@ -1,0 +1,11 @@
+Timestamp|Action|Performed By|Details
+2024-11-25 10:00:00|Added Product|Admin01|Product ID P013 - Gaming Chair
+2024-11-25 10:30:00|Resolved Support Request|Emp001|Request ID SUP123
+2024-11-25 11:00:00|Updated Stock|Emp002|Product ID P002 - Stock set to 25
+2024-11-25 11:30:00|Deleted Product|Admin02|Product ID P008
+2024-11-25 12:00:00|Generated Sales Report|Admin01|Date: 2024-11-25
+2024-11-25 12:30:00|Updated Price|Emp003|Product ID P005 - Price updated to 30.00
+2024-11-26 09:00:00|Bulk Import|Admin01|Imported 10 new products
+2024-11-26 09:30:00|Resolved Support Request|Emp001|Request ID SUP124
+2024-11-26 10:00:00|Added Discount Code|Admin02|Code: HOLIDAY20 - 20% Off
+2024-11-26 10:30:00|Marked Request as Pending|Emp002|Request ID SUP125

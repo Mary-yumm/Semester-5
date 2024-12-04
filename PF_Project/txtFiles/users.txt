@@ -9,3 +9,4 @@ peter999|strong999|Employee|peter@gmail.com|Peter Parker
 alice123|alicePass|Customer|alice@gmail.com|Alice Wonderland
 bruce456|batPass|Admin|bruce@gmail.com|Bruce Wayne
 clark789|superPass|Employee|clark@gmail.com|Clark Kent
+mary|pass|user|maryam@gmail.com|maryam

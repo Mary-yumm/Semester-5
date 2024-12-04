@@ -1,0 +1,11 @@
+Product ID|Name|Category|Price|Stock Quantity
+P001|Smartphone|Electronics|500.00|10
+P002|Headphones|Electronics|50.00|20
+P003|Backpack|Accessories|40.00|15
+P004|Running Shoes|Footwear|100.00|8
+P005|Desk Lamp|Home|25.00|12
+P006|Water Bottle|Sports|15.00|30
+P007|Tablet|Electronics|300.00|5
+P008|Smartwatch|Electronics|200.00|7
+P009|Sunglasses|Accessories|80.00|10
+P010|Notebook|Stationery|10.00|50

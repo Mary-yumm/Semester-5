@@ -1,0 +1,10 @@
+username|Product IDs
+john123|P001,P002,P003
+alice123|P004,P005
+maria567|P006,P007
+sara789|P008,P009
+mary|P010,P001
+maria567|P002,P003
+sara789|P004,P005
+maria567|P006,P007
+sara789|P008,P009

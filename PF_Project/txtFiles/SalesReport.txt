@@ -1,0 +1,11 @@
+Date|Product ID|Product Name|Quantity Sold|Total Revenue
+2024-11-25|P001|Smartphone|3|1500.00
+2024-11-25|P002|Headphones|5|250.00
+2024-11-25|P003|Backpack|2|80.00
+2024-11-25|P004|Running Shoes|1|100.00
+2024-11-25|P005|Desk Lamp|4|100.00
+2024-11-26|P006|Water Bottle|6|90.00
+2024-11-26|P007|Tablet|1|300.00
+2024-11-26|P008|Smartwatch|2|400.00
+2024-11-26|P009|Sunglasses|3|240.00
+2024-11-26|P010|Notebook|10|100.00

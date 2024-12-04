@@ -1,0 +1,12 @@
+Username|Request Message|Status
+john123|Inquiry about delivery time for Order #1234|Pending
+jane567|Need assistance with payment error on checkout|Resolved
+alice789|Question about product warranty for Product #5678|Pending
+bob456|Order cancellation request for Order #7890|Resolved
+emily234|Request for a return on Product #4567|Pending
+chris999|Complaint about missing item in delivery|Resolved
+katie321|Need help applying discount code SAVE20|Pending
+michael890|Request for detailed invoice for Order #3456|Pending
+sarah654|Query about restocking Product #8901|Resolved
+james111|Issue with login to account|Resolved
+mary|Issue with login to account|Pending
