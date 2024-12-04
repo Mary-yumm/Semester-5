@@ -9,4 +9,5 @@ katie321|Need help applying discount code SAVE20|Resolved: oaky
 michael890|Request for detailed invoice for Order #3456|Pending
 sarah654|Query about restocking Product #8901|Resolved
 james111|Issue with login to account|Resolved
-mary|Issue with login to account|Pending
+mary|Issue with login to account|Resolved: resolved!
+||

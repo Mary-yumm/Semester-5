@@ -2,11 +2,11 @@
 #include "UserAuthentication.h"
 #include "Inventory.h"
 #include "AdminFeatures.h"
-
+#include "Support.h"
 using namespace std;
 
 void CustomerMenu(char *username);
-void AdminMenu();
+void AdminMenu(char* username);
 void EmployeeMenu();
 
 int main()
@@ -44,7 +44,7 @@ int main()
         case 'a':
             username = UserMain('a');
             if (username[0] != failed[0])
-                AdminMenu();
+                AdminMenu(username);
 
             break;
         case 'q':
@@ -163,7 +163,7 @@ void EmployeeMenu()
     }
 }
 
-void AdminMenu()
+void AdminMenu(char* username)
 {
     // add user
     // add product
@@ -191,7 +191,9 @@ void AdminMenu()
         cout << "Press 12 to View Activity Logs" << endl;
         cout << "Press 13 to Create a Discount" << endl;
         cout << "Press 14 to Remove a Discount" <<endl;
-        cout << "Press 15 to Logout" << endl;
+        cout << "Press 15 to View Audit Trail" << endl;
+        cout << "Press 16 to Bulk Import Products" << endl;
+        cout << "Press 17 to Logout" << endl;
 
         int choice;
         cin >> choice;
@@ -202,21 +204,27 @@ void AdminMenu()
             break;
             case 2:
             viewAllOrders();
+
             break;
             case 3:
             addProduct();
+            CreateAuditTrail(username,3);
             break;
             case 4:
             removeProduct();
+            CreateAuditTrail(username,4);
             break;
             case 5:
             updateProduct();
+            CreateAuditTrail(username,5);
             break;
             case 6:
             FeedbackResponse();
+            CreateAuditTrail(username,6);
             break;
             case 7:
             ResolveQuery();
+            CreateAuditTrail(username,7);
             break;
             case 8:
             viewLowStock();
@@ -226,20 +234,30 @@ void AdminMenu()
             break;
             case 10:
             addUser();
+            CreateAuditTrail(username,10);
             break;
             case 11:
             removeUser();
+            CreateAuditTrail(username,11);
             break;
             case 12:
             viewActivityLogs();
             break;
             case 13:
             createDiscount();
+            CreateAuditTrail(username,13);
             break;
             case 14:
             removeDiscount();
+            CreateAuditTrail(username,14);
             break;
             case 15:
+            viewAuditTrail();
+            break;
+            case 16:
+            bulkImportProducts();
+            break;
+            case 17:
             return;
             default:
             cout << "Invalid choice. Please choose a valid option." << endl;

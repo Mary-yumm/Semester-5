@@ -2,29 +2,8 @@
 #include <fstream>
 #include "iomanip"
 #include "AdminFeatures.h"
+#include "utilities.h"
 using namespace std;
-
-bool isEqual3(char *str1, char *str2)
-{
-    int i = 0;
-
-    while (str1[i] != '\0' && str2[i] != '\0')
-    {
-        if (str1[i] != str2[i])
-        {
-            return false;
-        }
-        i++;
-    }
-    if (str1[i] != '\0' || str2[i] != '\0')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
 
 void removeUser()
 {
@@ -74,7 +53,7 @@ void removeUser()
         extractedUsername[i] = '\0';
 
         // If the username matches, skip the line
-        if (isEqual3(extractedUsername, username))
+        if (isEqual(extractedUsername, username))
         {
             found = true;
 
@@ -184,14 +163,11 @@ void viewActivityLogs()
     char *timestamp = new char[50];
     char *action = new char[50];
     char *performedBy = new char[50];
-    char *details = new char[100];
 
     // Print table headers
     cout << left << setw(20) << "Timestamp"
          << setw(20) << "Action"
-         << setw(20) << "Performed By"
-         << setw(50) << "Details" << endl;
-
+         << setw(20) << "Performed By" << endl;
     char charline;
     while (!file.eof())
     {
@@ -211,7 +187,7 @@ void viewActivityLogs()
 
         // extract action
         i = 0;
-        while ((file >> charline) && charline != '|')
+        while ((file.get(charline)) && charline != '|')
         {
             action[i] = charline;
             i++;
@@ -220,33 +196,22 @@ void viewActivityLogs()
 
         // extract performedBy
         i = 0;
-        while ((file >> charline) && charline != '|')
+        while ((file.get(charline)) && charline != '\n')
         {
             performedBy[i] = charline;
             i++;
         }
         performedBy[i] = '\0';
 
-        // extract details
-        i = 0;
-        while (file.get(charline) && charline != '\n')
-        {
-            details[i] = charline;
-            i++;
-        }
-        details[i] = '\0';
-
         // Print the extracted data in a formatted table
         cout << left << setw(20) << timestamp
              << setw(20) << action
-             << setw(20) << performedBy
-             << setw(50) << details << endl;
+             << setw(20) << performedBy << endl;
     }
 
     delete[] timestamp;
     delete[] action;
     delete[] performedBy;
-    delete[] details;
 
     file.close();
     return;
@@ -264,7 +229,8 @@ void createDiscount()
     if (found)
     {
         ofstream file("txtFiles/Discount.txt", ios::app);
-        file << endl<<productID << "|" << discount;
+        file << endl
+             << productID << "|" << discount;
     }
     else
     {
@@ -311,7 +277,7 @@ bool ProductExists(char *productID)
         }
 
         // If the product ID matches, skip the line
-        if (isEqual3(extractedID, productID))
+        if (isEqual(extractedID, productID))
         {
             found = true;
             cout << found << endl;
@@ -374,7 +340,7 @@ void removeDiscount()
         extractedID[i] = '\0';
 
         // If the product ID matches, skip writing it to the temp file
-        if (isEqual3(extractedID, productID))
+        if (isEqual(extractedID, productID))
         {
             found = true;
 
@@ -387,7 +353,7 @@ void removeDiscount()
         else
         {
             // If the product ID doesn't match, write the entire line to the temp file
-            tempFile <<extractedID << "|";
+            tempFile << extractedID << "|";
 
             // Copy remaining fields (the discount part)
             while (file.get(charline))
@@ -417,4 +383,248 @@ void removeDiscount()
     delete[] productID;
     delete[] extractedID;
     delete[] header;
+}
+
+void CreateAuditTrail(char *username, int choice)
+{
+    // Get current time
+    time_t now = std::time(0); // Get the current time
+    char timestamp[20];
+
+    // Format the current time into a string with the format: YYYY-MM-DD HH:MM:SS
+    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+
+    // Set the action message based on the choice
+    const char *action = "Unknown action";
+
+    switch (choice)
+    {
+    case 3:
+        action = "Product added successfully.";
+        break;
+    case 4:
+        action = "Product removed successfully.";
+        break;
+    case 5:
+        action = "Product updated successfully.";
+        break;
+    case 6:
+        action = "Feedback Response given successfully.";
+        break;
+    case 7:
+        action = "Resolved a query successfully.";
+        break;
+    case 10:
+        action = "A User added successfully.";
+        break;
+    case 11:
+        action = "A User removed successfully.";
+        break;
+    case 13:
+        action = "Discount created successfully.";
+        break;
+    case 14:
+        action = "Discount removed successfully.";
+        break;
+    default:
+        action = "An unknown action was performed.";
+        break;
+    }
+
+    // Open the audit trail file in append mode
+    ofstream auditTrail("txtFiles/AuditTrail.txt", ios::app);
+
+    if (!auditTrail)
+    {
+        cout << "Error opening the file!" << endl;
+        return;
+    }
+
+    // Write the timestamp, action, and performed by information to the file
+    auditTrail << timestamp << "|";
+    auditTrail << action << "|";
+    auditTrail << username << endl;
+
+    // Close the file
+    auditTrail.close();
+}
+
+void viewAuditTrail()
+{
+    ifstream file;
+    file.open("txtFiles/AuditTrail.txt");
+    if (!file)
+    {
+        cout << "Error opening the file!" << endl;
+        return;
+    }
+
+    char *timestamp = new char[50];
+    char *action = new char[100]; // Adjust size for action message
+    char *performedBy = new char[50];
+
+    // Print table headers
+    cout << left << setw(20) << "Timestamp"
+         << setw(50) << "Action"
+         << setw(20) << "Performed By" << endl;
+
+    char charline;
+    // Skip first header line or empty lines
+    while (file.get(charline) && charline != '\n')
+    {
+    }
+
+    while (!file.eof())
+    {
+
+        int i = 0;
+        // Extract timestamp
+        while ((file >> charline) && charline != '|')
+        {
+            timestamp[i] = charline;
+            i++;
+        }
+        timestamp[i] = '\0';
+
+        // Extract action
+        i = 0;
+        while ((file.get(charline)) && charline != '|')
+        {
+            action[i] = charline;
+            i++;
+        }
+        action[i] = '\0';
+
+        // Extract performedBy
+        i = 0;
+        while ((file.get(charline)) && charline != '\n')
+        {
+            performedBy[i] = charline;
+            i++;
+        }
+        performedBy[i] = '\0';
+
+        // Print the extracted data in a formatted table
+        cout << left << setw(20) << timestamp
+             << setw(50) << action
+             << setw(20) << performedBy << endl;
+    }
+
+    delete[] timestamp;
+    delete[] action;
+    delete[] performedBy;
+
+    file.close();
+    return;
+}
+
+void bulkImportProducts()
+{
+    cout<<"Enter filename for bulk import: ";
+    char* filename = new char[50];
+    cin >> filename;
+    cout << "Starting bulk import of products from " << filename << "...\n";
+
+    ifstream file;
+    file.open(filename);
+    if (!file)
+    {
+        cout << "Error opening the file!" << endl;
+        return;
+    }
+
+    cin.ignore();  // Ignore any leftover newline character
+    char charline;
+    char *productID = new char[50];
+    char *name = new char[50];
+    char *category = new char[50];
+    char *price = new char[50];
+    char *quantity = new char[50];
+
+    // Skip the first header line if it exists
+    while (file.get(charline) && charline != '\n') {}
+
+    int importedCount = 0;
+
+    // Read each line from the file
+    while (!file.eof())
+    {
+        // Extract product ID
+        int i = 0;
+        while ((file >> charline) && charline != '|')
+        {
+            productID[i] = charline;
+            i++;
+        }
+        productID[i] = '\0';
+
+        // Extract product name
+        i = 0;
+        while ((file >> charline) && charline != '|')
+        {
+            name[i] = charline;
+            i++;
+        }
+        name[i] = '\0';
+
+        // Extract category
+        i = 0;
+        while ((file >> charline) && charline != '|')
+        {
+            category[i] = charline;
+            i++;
+        }
+        category[i] = '\0';
+
+        // Extract price
+        i = 0;
+        while ((file >> charline) && charline != '|')
+        {
+            price[i] = charline;
+            i++;
+        }
+        price[i] = '\0';
+
+        // Extract quantity
+        i = 0;
+        while (file.get(charline) && charline != '\n')
+        {
+            quantity[i] = charline;
+            i++;
+        }
+        quantity[i] = '\0';
+
+        // Check if all fields are valid (you can add more validation as needed)
+        if (productID[0] != '\0' && name[0] != '\0' && category[0] != '\0' && price[0] != '\0' && quantity[0] != '\0')
+        {
+            // Add the product to the inventory file
+            ofstream outFile;
+            outFile.open("txtFiles/Inventory.txt", ios::app);
+            if (!outFile)
+            {
+                cout << "Error opening the inventory file for writing!" << endl;
+                continue; // Skip this product if file can't be opened
+            }
+
+            // Append the new product details to the file
+            outFile << productID << "|" << name << "|" << category << "|"
+                    << price << "|" << quantity << endl;
+
+            outFile.close();
+            importedCount++;
+        }
+        else
+        {
+            cout << "Skipping invalid product data: " << productID << endl;
+        }
+    }
+
+    delete[] productID;
+    delete[] name;
+    delete[] category;
+    delete[] price;
+    delete[] quantity;
+
+    file.close();
+    cout << "Bulk import completed. " << importedCount << " products were added to the inventory.\n";
 }

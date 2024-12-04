@@ -1,2 +1,2 @@
-g++ SecureShop.cpp UserAuthentication.cpp Inventory.cpp AdminFeatures.cpp -o SecureShop
+g++ SecureShop.cpp UserAuthentication.cpp Inventory.cpp AdminFeatures.cpp Support.cpp utilities.cpp -o SecureShop
 

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include "UserAuthentication.h"
+#include "utilities.h"
+#include <ctime>
 
 using namespace std;
 
@@ -12,28 +14,6 @@ void UserMenu()
     cout << "2. Login" << endl;
     cout << "3. Exit" << endl;
     cout << "Enter your choice: ";
-}
-
-bool isEqual(char *str1, char *str2)
-{
-    int i = 0;
-
-    while (str1[i] != '\0' && str2[i] != '\0')
-    {
-        if (str1[i] != str2[i])
-        {
-            return false;
-        }
-        i++;
-    }
-    if (str1[i] != '\0' || str2[i] != '\0')
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
 }
 
 void registerUser(char usertype)
@@ -170,6 +150,10 @@ char *UserMain(char usertype)
             break;
         case 2:
             username = login();
+            if(username[0]=='0'){
+                createActivity(usertype);
+            }
+
             break;
         case 3:
             cout << "Exiting the user program." << endl;
@@ -180,4 +164,40 @@ char *UserMain(char usertype)
         if (username) // logged in
             return username;
     }
+}
+
+void createActivity(char usertype) {
+    // Get current time
+    time_t now = std::time(0);  // Get the current time
+    char timestamp[20];
+    
+    // Format the current time into a string with the format: YYYY-MM-DD HH:MM:SS
+    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    
+    const char* action = "Login Attempt";
+    const char* usertypeStr = "";
+
+    // Determine usertype
+    if (usertype == 'A' || usertype == 'a') {
+        usertypeStr = "Admin interface";
+    } else if (usertype == 'E' || usertype == 'e') {
+        usertypeStr = "Employee interface";
+    } else if (usertype == 'C' || usertype == 'c') {
+        usertypeStr = "Customer interface";
+    }
+
+    // Open file in append mode
+    ofstream file("txtFiles/ActivityLogs.txt", ios::app);
+
+    if (!file) {
+        cout << "Error opening the file!" << endl;
+        return;
+    }
+
+    // Write the log entry to the file
+    file << timestamp << "|";
+    file << action << "|" << usertypeStr <<endl;
+
+    // Close the file
+    file.close();
 }
