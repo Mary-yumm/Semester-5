@@ -212,53 +212,200 @@ void PlaceOrder(char *username)
     // View products and select one to order
     viewAllProducts();
 
-    cout << "\nEnter the product ID of the product you want to order: ";
-    char *productID = new char[50];
-    cin.getline(productID, 50);
+    while (true)
+    {
+        cout << "\nEnter the product ID of the product you want to order: ";
+        char *productID = new char[50];
+        cin.getline(productID, 50);
 
-    cout << "Enter the quantity you want to order: ";
-    int quantity;
-    cin >> quantity;
+        cout << "Enter the quantity you want to order: ";
+        int quantity;
+        cin >> quantity;
 
-    cin.ignore(); // To clear the newline left by cin
+        cin.ignore(); 
 
-    cout << "Enter the date of the order (YYYY-MM-DD): ";
-    char *orderDate = new char[50];
-    cin.getline(orderDate, 50);
+        cout << "Enter the date of the order (YYYY-MM-DD): ";
+        char *orderDate = new char[50];
+        cin.getline(orderDate, 50);
 
-    cout << "Enter Order ID: ";
+        cout << "Enter Order ID: ";
+        char *orderID = new char[50];
+        cin.getline(orderID, 50);
+
+        // Calculate the price of the product
+        double price = calculateOrderPrice(productID);
+        double totalPrice = price * quantity;
+        cout << "Total price: $" << totalPrice << endl;
+
+        cout << "\nPress 1 to place order. Press 2 to add more. Any other key to exit";
+        int choice;
+        cin >> choice;
+        if (choice == 1)
+        {
+            // Add to cart.txt
+            ofstream file("txtFiles/cart.txt", ios::app);
+            file << username << "|";
+            file << orderID << "|";
+            file << orderDate << "|";
+            file << productID << "|";
+            file << quantity << "|";
+            file << totalPrice << endl;
+            file.close();
+            cin.ignore();
+            break;
+        }
+        else if (choice == 2)
+        {
+            // Add to cart.txt
+            ofstream file("txtFiles/cart.txt", ios::app);
+            file << username << "|";
+            file << orderID << "|";
+            file << orderDate << "|";
+            file << productID << "|";
+            file << quantity << "|";
+            file << totalPrice << endl;
+            file.close();
+            cin.ignore();
+        }
+        else
+        {
+            cout << "Exiting...";
+            return;
+        }
+    }
+
+    // Place the order - read from cart.txt and append to orders.txt
+    ifstream cartFile("txtFiles/cart.txt");
+    if (!cartFile)
+    {
+        cout << "Error opening cart file!" << endl;
+        return;
+    }
+
+    ofstream ordersFile("txtFiles/Orders.txt", ios::app);
+    if (!ordersFile)
+    {
+        cout << "Error opening orders file!" << endl;
+        cartFile.close();
+        return;
+    }
+
+    char charline;
+    char *customerName = new char[50];
     char *orderID = new char[50];
-    cin.getline(orderID, 50);
+    char *orderDate = new char[50];
+    char *productID = new char[50];
+    char *quantity = new char[50];
+    char *totalPrice = new char[50];
 
-    // Calculate the price of the product
-    double price = calculateOrderPrice(productID);
-    double totalPrice = price * quantity;
-    cout << "Total price: $" << totalPrice << endl;
-
-    ofstream file;
-    file.open("txtFiles/Orders.txt", ios::app); // Open in append mode
-
-    if (file.is_open())
+    // Skip the first header line
+    while (cartFile.get(charline) && charline != '\n')
     {
-        file << username << "|";
-        file << orderID << "|";
-        file << orderDate << "|";
-        file << productID << "|";
-        file << quantity << "|";
-        file << totalPrice << endl;
-        file.close();
-        cout << "Order placed successfully!" << endl;
-    }
-    else
-    {
-        cout << "Error opening Orders.txt file!" << endl;
     }
 
-    // updateSalesReport(productID, orderDate, quantity, totalPrice);
+    while (!cartFile.eof())
+    {
+        // Extract customer name
+        int i = 0;
+        while ((cartFile >> charline) && (charline != '|'))
+        {
+            customerName[i] = charline;
+            i++;
+        }
+        customerName[i] = '\0';
+        i++;
 
-    delete[] productID;
-    delete[] orderDate;
+        // Extract order ID
+        i = 0;
+        while ((cartFile >> charline) && (charline != '|'))
+        {
+            orderID[i] = charline;
+            i++;
+        }
+        orderID[i] = '\0';
+        i++;
+
+        // Extract order date
+        i = 0;
+        while ((cartFile >> charline) && (charline != '|'))
+        {
+            orderDate[i] = charline;
+            i++;
+        }
+        orderDate[i] = '\0';
+        i++;
+
+        // Extract product ID
+        i = 0;
+        while ((cartFile >> charline) && (charline != '|'))
+        {
+            productID[i] = charline;
+            i++;
+        }
+        productID[i] = '\0';
+        i++;
+
+        // Extract quantity
+        i = 0;
+        while ((cartFile >> charline) && (charline != '|'))
+        {
+            quantity[i] = charline;
+            i++;
+        }
+        quantity[i] = '\0';
+        i++;
+
+        // Extract total price
+        i = 0;
+        while (cartFile.get(charline) && charline != '\n')
+        {
+            totalPrice[i] = charline;
+            i++;
+        }
+        totalPrice[i] = '\0';
+
+        // Append the order to orders.txt
+        ordersFile << endl << customerName << "|"
+                   << orderID << "|"
+                   << orderDate << "|"
+                   << productID << "|"
+                   << quantity << "|"
+                   << totalPrice << endl;
+    }
+
+    delete[] customerName;
     delete[] orderID;
+    delete[] orderDate;
+    delete[] productID;
+    delete[] quantity;
+    delete[] totalPrice;
+
+    cartFile.close();
+    ordersFile.close();
+
+    // Remove the entries from cart.txt after placing the order
+    ifstream inputFile("txtFiles/cart.txt");
+    ofstream tempFile("txtFiles/tempCart.txt");
+
+    // Skip the first header line and copy it to the temporary file
+    while (inputFile.get(charline) && charline != '\n')
+    {
+        tempFile.put(charline);
+    }
+
+    tempFile.put('\n'); // Add a new line after the header
+
+    // Close the current cart.txt and tempCart.txt
+    inputFile.close();
+    tempFile.close();
+
+    // Replace cart.txt with the temporary file
+    remove("txtFiles/cart.txt");
+    rename("txtFiles/tempCart.txt", "txtFiles/cart.txt");
+
+    cout << "Cart has been cleared except for the headers!" << endl;
+
+    cout << "Order placed successfully!" << endl;
 }
 
 double calculateOrderPrice(char *ProdID)
@@ -334,103 +481,6 @@ double calculateOrderPrice(char *ProdID)
 
     return price;
 }
-
-/*
-void updateSalesReport(char *productID, char *orderDate, int quantity, double totalPrice)
-{
-    // Open SalesReport.txt for reading and writing
-    ifstream file("txtFiles/SalesReport.txt");
-    ofstream tempFile("txtFiles/tempSalesReport.txt");
-
-    char* line = new char[256];
-    bool found = false;
-
-    // Read through the file and check for an existing entry
-    while (file.getline(line, 256))
-    {
-        char date[50], prodID[50], prodName[50];
-        char quantitySoldStr[50], totalRevenueStr[50];
-        int quantitySold = 0;
-        double totalRevenue = 0.0;
-
-        int i = 0;
-         // skip first header line
-        while (file.get(line) && charline != '\n')
-        {
-        }
-        // Parse the line manually using char[] arrays
-        // Parse date
-        while (line[i] != '|' && line[i] != '\0')
-        {
-            date[i] = line[i];
-            i++;
-        }
-        date[i] = '\0';
-        i++;
-
-        // Parse product ID
-        int j = 0;
-        while (line[i] != '|' && line[i] != '\0')
-        {
-            prodID[j++] = line[i++];
-        }
-        prodID[j] = '\0';
-        i++;
-
-        // Parse product name
-        j = 0;
-        while (line[i] != '|' && line[i] != '\0')
-        {
-            prodName[j++] = line[i++];
-        }
-        prodName[j] = '\0';
-        i++;
-
-        // Parse quantity sold
-        j = 0;
-        while (line[i] != '|' && line[i] != '\0')
-        {
-            quantitySoldStr[j++] = line[i++];
-        }
-        quantitySoldStr[j] = '\0';
-        quantitySold = stringToDouble(quantitySoldStr); // Convert to integer manually
-        i++;
-
-        // Parse total revenue
-        j = 0;
-        while (line[i] != '|' && line[i] != '\0')
-        {
-            totalRevenueStr[j++] = line[i++];
-        }
-        totalRevenueStr[j] = '\0';
-        totalRevenue = stringToDouble(totalRevenueStr); // Convert to double manually
-
-        // If the product ID and date match, update the sales record
-        if (isEqual(prodID, productID) == 0 && isEqual(date, orderDate) == 0)
-        {
-            quantitySold += quantity;
-            totalRevenue += totalPrice;
-            found = true;
-            // Write updated record to temp file
-            tempFile << date << "|" << prodID << "|" << prodName << "|"
-                     << quantitySold << "|" << totalRevenue << endl;
-            cout<<"Updated SalesReport.txt"<<endl;
-        }
-        else
-        {
-            // Otherwise, write the line as it is
-            tempFile << line << endl;
-        }
-    }
-
-    file.close();
-    tempFile.close();
-
-    // Replace the original SalesReport.txt with the updated one
-    remove("txtFiles/SalesReport.txt");
-    rename("txtFiles/tempSalesReport.txt", "txtFiles/SalesReport.txt");
-}
-*/
 
 void viewWishList(char *username)
 {
@@ -1140,3 +1190,4 @@ void updateProduct()
     delete[] price;
     delete[] stockQuantity;
 }
+

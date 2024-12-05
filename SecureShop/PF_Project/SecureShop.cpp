@@ -68,17 +68,14 @@ void CustomerMenu(char *username)
     {
 
         cout << "\n\nCustomer Menu" << endl;
-        // cout << "Press 1 to Search for a product" << endl;
         cout << "Press 1 to View all products" << endl;
         cout << "Press 2 to View your order history" << endl;
-        cout << "Press 3 to Place an order" << endl;
+        cout << "Press 3 to Add To Cart" << endl;
         cout << "Press 4 for Customer Support" << endl;
-        // cout << "Press 6 to View Cart" << endl;
         cout << "Press 5 to View WishList" << endl;
         cout << "Press 6 to give Feedback" << endl;
         cout << "Press 7 to Logout" << endl
              << endl;
-        // switch
         char choice;
         cin >> choice;
         switch (choice)

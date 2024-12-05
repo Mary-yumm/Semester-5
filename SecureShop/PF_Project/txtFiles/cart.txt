@@ -1,0 +1,1 @@
+Customer Name|Order ID|Date|Product IDs|Quantities|Total Price

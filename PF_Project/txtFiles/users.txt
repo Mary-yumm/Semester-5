@@ -2,11 +2,9 @@ username|password|role|email|name
 john123|pass123|Customer|john@gmail.com|John Doe
 emily456|securePass|Employee|emily@gmail.com|Emily Smith
 admin001|adminPass|Admin|admin@gmail.com|Tony Stark
-sara789|myPass78|Customer|sara@gmail.com|Sara Connor
 david890|secure789|Employee|david@gmail.com|David Johnson
 maria567|pass567|Customer|maria@gmail.com|Maria Gonzalez
 peter999|strong999|Employee|peter@gmail.com|Peter Parker
 alice123|alicePass|Customer|alice@gmail.com|Alice Wonderland
 bruce456|batPass|Admin|bruce@gmail.com|Bruce Wayne
 clark789|superPass|Employee|clark@gmail.com|Clark Kent
-mary|pass|user|maryam@gmail.com|maryam

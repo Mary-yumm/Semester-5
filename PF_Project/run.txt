@@ -1,11 +1,2 @@
-g++ SecureShop.cpp UserAuthentication.cpp Inventory.cpp AdminFeatures.cpp -o SecureShop
+g++ SecureShop.cpp UserAuthentication.cpp Inventory.cpp AdminFeatures.cpp Support.cpp utilities.cpp -o SecureShop
 
-
-main.cpp                  // Main program
-Inventory.h / Inventory.cpp   // Inventory management
-Orders.h / Orders.cpp         // Order processing and checkout
-Support.h / Support.cpp       // Support request handling
-SalesReport.h / SalesReport.cpp // Sales report generation
-AccessControl.h / AccessControl.cpp // Role management and security
-AuditTrail.h / AuditTrail.cpp // Admin-specific audit functions
-Feedback.h / Feedback.cpp     // Feedback management

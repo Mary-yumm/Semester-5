@@ -12,3 +12,4 @@ F010|Thank you! We're pleased you found it useful.
 F011|Thank you for the compliment! We're glad you're enjoying it.
 F008|okyyy
 F010|okay
+F009|Glad to hear that

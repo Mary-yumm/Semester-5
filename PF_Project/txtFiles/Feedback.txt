@@ -1,12 +1,14 @@
-username|Product ID|Feedback
-john123|P001|Excellent phone with great features!
-maria567|P003|Very spacious and durable.
-alice123|P004|Comfortable and lightweight.
-sara789|P005|Bright and energy-efficient lamp.
-mary|P006|Keeps water cold for hours!
-maria567|P002|Good sound quality but overpriced.
-sara789|P007|Smooth performance and sleek design.
-maria567|P008|Stylish and functional smartwatch.
-sara789|P009|Great quality and UV protection.
-mary|P010|Affordable and handy notebook.
-mary|P001|Excellent phone!
+Feedback ID|Username|Product ID|Feedback
+F001|john123|P001|Excellent phone with great features!
+F002|maria567|P003|Very spacious and durable.
+F003|alice123|P004|Comfortable and lightweight.
+F004|sara789|P005|Bright and energy-efficient lamp.
+F005|mary|P006|Keeps water cold for hours!
+F006|maria567|P002|Good sound quality but overpriced.
+F007|sara789|P007|Smooth performance and sleek design.
+F008|maria567|P008|Stylish and functional smartwatch.
+F009|sara789|P009|Great quality and UV protection.
+F010|mary|P010|Affordable and handy notebook.
+F011|mary|P001|Excellent phone!
+FXXX|mary|P005|it was good
+FXXX |mary|P005|it was good

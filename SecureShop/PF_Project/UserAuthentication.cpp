@@ -119,7 +119,7 @@ char *login()
         filePassword[i] = '\0';
         if (isEqual(username, fileUserName) && isEqual(password, filePassword))
         {
-            cout << "\nLogin Successful! Welcome to SecureShope :)" << endl;
+            cout << "\nLogin Successful! Welcome to SecureShop :)" << endl;
             return username;
         }
         delete[] fileUserName;

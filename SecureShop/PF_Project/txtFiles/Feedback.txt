@@ -10,3 +10,7 @@ F008|maria567|P008|Stylish and functional smartwatch.
 F009|sara789|P009|Great quality and UV protection.
 F010|mary|P010|Affordable and handy notebook.
 F011|mary|P001|Excellent phone!
+FXXX|mary|P005|it was good
+FXXX |mary|P005|it was good
+FXXX |john123|P001|Excellent product
+FXXX |john123|P010|Nice Product!

@@ -5,6 +5,16 @@ P003|Backpack|Accessories|40.00|15
 P004|RunningShoes|Footwear|100.00|8
 P005|DeskLamp|Home|100.0|6
 P006|WaterBottle|Sports|15.00|30
+P009|glasses|Accessories|80.00|20
+P010|Notebook|Stationery|10.00|600
+P123|SmartWatch|Watch|2000|400
+4|P123|abc|120|12
+P001|Smartphone|Electronics|500.00|10
+P002|Headphones|Electronics|50.00|2
+P003|Backpack|Accessories|40.00|15
+P004|RunningShoes|Footwear|100.00|8
+P005|DeskLamp|Home|100.0|6
+P006|WaterBottle|Sports|15.00|30
 P009|glasses|Accessories|80.00|10
 P010|Notebook|Stationery|10.00|600
 P100|Phone|Tech|20000|4

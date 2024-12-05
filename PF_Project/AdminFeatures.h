@@ -6,8 +6,18 @@ void removeUser();
 
 void addUser();
 
-bool isEqual3(char *str1, char *str2);
-
 void viewActivityLogs();
+
+void createDiscount();
+
+void removeDiscount();
+
+bool ProductExists(char *productID);
+
+void CreateAuditTrail(char* username,int choice);
+
+void viewAuditTrail();
+
+void bulkImportProducts();
 
 #endif

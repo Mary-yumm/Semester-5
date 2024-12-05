@@ -1,0 +1,5 @@
+if(EXISTS "/home/mary/GitHub/Semester-5/lab2/build/structural-tests-b12d07c_tests.cmake")
+  include("/home/mary/GitHub/Semester-5/lab2/build/structural-tests-b12d07c_tests.cmake")
+else()
+  add_test(structural-tests_NOT_BUILT-b12d07c structural-tests_NOT_BUILT-b12d07c)
+endif()
