@@ -6,13 +6,33 @@
 #include "emulator.h"
 
 // ============= Breakpoint ==============
-Breakpoint::Breakpoint() { }
+// Breakpoint::Breakpoint() { }
+//==
+Breakpoint::Breakpoint() : _address(0), _name(nullptr) {}
+
+// ===
+Breakpoint::~Breakpoint() {
+    if (_name) {
+        free(_name);
+        _name = nullptr;
+    }
+}
+
+// ===
+Emulator::~Emulator() {
+    if (breakpoints != nullptr) {
+        delete[] breakpoints;
+        breakpoints = nullptr;
+    }
+}
+
 
 Breakpoint::Breakpoint(addr_t address, const char* name) {
   _address = address & ARCH_BITMASK;
   _name = (char *)malloc(strlen(name) + 1);
   strcpy(_name, name);
 }
+
 
 // Copy constructor
 Breakpoint::Breakpoint(const Breakpoint& other) {
@@ -22,26 +42,57 @@ Breakpoint::Breakpoint(const Breakpoint& other) {
 }
 
 // Move constructor
+// Breakpoint::Breakpoint(Breakpoint&& other) noexcept {
+//   std::swap(_address, other._address);
+//   std::swap(_name, other._name);
+// }
+//===
 Breakpoint::Breakpoint(Breakpoint&& other) noexcept {
-  std::swap(_address, other._address);
-  std::swap(_name, other._name);
+    std::swap(_address, other._address);
+    std::swap(_name, other._name);
+    other._name = nullptr;
 }
+
 
 // Copy assignment
+// Breakpoint& Breakpoint::operator=(const Breakpoint& other) {
+//   if (this == &other)
+//     return *this;
+//   _address = other._address;
+//   _name = (char *)malloc(strlen(other._name) + 1);
+//   strcpy(_name, other._name);
+//   return *this;
+// }
+
+// ==
 Breakpoint& Breakpoint::operator=(const Breakpoint& other) {
-  if (this == &other)
+    if (this == &other)
+        return *this;
+
+    free(_name);
+    _name = (char*)malloc(strlen(other._name) + 1);
+    strcpy(_name, other._name);
+    _address = other._address;
+
     return *this;
-  _address = other._address;
-  _name = (char *)malloc(strlen(other._name) + 1);
-  strcpy(_name, other._name);
-  return *this;
 }
 
+
+
 // Move assignment
+// Breakpoint& Breakpoint::operator=(Breakpoint&& other) noexcept {
+//   std::swap(_address, other._address);
+//   std::swap(_name, other._name);
+//   return *this;
+// }
+// ===
 Breakpoint& Breakpoint::operator=(Breakpoint&& other) noexcept {
-  std::swap(_address, other._address);
-  std::swap(_name, other._name);
-  return *this;
+    if (this != &other) {
+        std::swap(_address, other._address);
+        std::swap(_name, other._name);
+        other._name = nullptr;
+    }
+    return *this;
 }
 
 addr_t Breakpoint::get_address() const {
@@ -63,17 +114,22 @@ int Breakpoint::has(const char* name) const {
 // ============= Emulator ==============
 
 // ----------> Initialisation
-Emulator::Emulator() {
-  state = ProcessorState();
+// Emulator::Emulator() {
+//   state = ProcessorState();
 
-  // An array as big as the max number of instructions we could ever have
-  // This is obviously an overkill. Initialising the array to be shorter
-  // is okay, as long as you can handle the worst case of MAX_INSTRUCTIONS
-  // breakpoints
-  breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
-  breakpoints_sz = 0;
-  total_cycles = 0;
+//   // An array as big as the max number of instructions we could ever have
+//   // This is obviously an overkill. Initialising the array to be shorter
+//   // is okay, as long as you can handle the worst case of MAX_INSTRUCTIONS
+//   // breakpoints
+//   breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
+//   breakpoints_sz = 0;
+//   total_cycles = 0;
+// }
+
+Emulator::Emulator() : state(), breakpoints(nullptr), breakpoints_sz(0), total_cycles(0) {
+    breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
 }
+
 
 // Copy Constructor
 Emulator::Emulator(const Emulator& other) {
@@ -95,19 +151,38 @@ Emulator::Emulator(Emulator&& other) noexcept {
 }
 
 // Copy Assignment Operator
+// Emulator& Emulator::operator=(const Emulator& other) {
+//   if (this == &other)
+//     return *this;
+
+//   state = other.state;
+//   breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
+//   breakpoints_sz = other.breakpoints_sz;
+//   total_cycles = other.total_cycles;
+
+//   for (int i = 0; i < breakpoints_sz; ++i)
+//     breakpoints[i] = other.breakpoints[i];
+//   return *this;
+// }
+// ==
 Emulator& Emulator::operator=(const Emulator& other) {
-  if (this == &other)
+    if (this == &other)
+        return *this;
+
+    // Free the existing array
+    delete[] breakpoints;
+
+    state = other.state;
+    breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
+    breakpoints_sz = other.breakpoints_sz;
+    total_cycles = other.total_cycles;
+
+    for (int i = 0; i < breakpoints_sz; ++i)
+        breakpoints[i] = other.breakpoints[i];
+
     return *this;
-
-  state = other.state;
-  breakpoints = new Breakpoint[MAX_INSTRUCTIONS];
-  breakpoints_sz = other.breakpoints_sz;
-  total_cycles = other.total_cycles;
-
-  for (int i = 0; i < breakpoints_sz; ++i)
-    breakpoints[i] = other.breakpoints[i];
-  return *this;
 }
+
 
 // Move Assignment Operator
 Emulator& Emulator::operator=(Emulator&& other) noexcept {
@@ -241,6 +316,8 @@ int Emulator::delete_breakpoint(addr_t address) {
     // would cause a copy
     breakpoints[idx] = std::move(breakpoints[idx + 1]);
   }
+  //==
+  breakpoints[breakpoints_sz] = Breakpoint();
 
   return 1;
 }
@@ -260,6 +337,9 @@ int Emulator::delete_breakpoint(const char* name) {
   for (int idx = found_idx; idx < breakpoints_sz; ++idx) {
     breakpoints[idx] = std::move(breakpoints[idx + 1]);
   }
+  //===
+  breakpoints[breakpoints_sz] = Breakpoint(); // Reset the last slot
+
 
   return 1;
 }

@@ -46,6 +46,7 @@ class Breakpoint {
      * The testing code does not use this, so remove it if your code does not need it
      */
     Breakpoint();
+    ~Breakpoint();
 
     /**
      * The actually useful constructor: creates a breakpoint with the given address and name.
@@ -54,6 +55,7 @@ class Breakpoint {
      * @param name A symbolic name for the breakpoint. We are not allowed to modify or take ownership of this string. The name can contain any alphanumeric character (no spaces allowed). The name is guaranteed to be valid (i.e. not null)
      */
     Breakpoint(addr_t address, const char* name);
+    
 
     // Copy/Move Constructors
     Breakpoint(const Breakpoint& other);
@@ -109,6 +111,7 @@ class Emulator {
      * The testing code expects that a default constructor exists, though not necessarily one that you've written
      */
     Emulator();
+    ~Emulator();
 
     /**
      * Copy constructor

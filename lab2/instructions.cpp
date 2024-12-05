@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include<iostream>
 #include "instructions.h"
 
 // ========== InstructionBase ==========
@@ -26,55 +27,56 @@ void InstructionBase::_set_address(addr_t address) {
 }
 
 char* InstructionBase::to_string() const {
-  // Having a malloc is definitely a bad sign
-  char* buffer = (char *) malloc(32);
-
-  // Figure out what the instruction actually is based on the return value of name()
-  // and then generate an appropriate instruction-specific string
-  if (strncmp(name(), "ADD", 3) == 0)
-    sprintf(buffer, "%s: ACC <- ACC + [%d]", name(), get_address());
-  else if (strncmp(name(), "AND", 3) == 0)
-    sprintf(buffer, "%s: ACC <- ACC & [%d]", name(), get_address());
-  else if (strncmp(name(), "ORR", 3) == 0)
-    sprintf(buffer, "%s: ACC <- ACC | [%d]", name(), get_address());
-  else if (strncmp(name(), "XOR", 3) == 0)
-    sprintf(buffer, "%s: ACC <- ACC ^ [%d]", name(), get_address());
-  else if (strncmp(name(), "LDR", 3) == 0)
-    sprintf(buffer, "%s: ACC <- [%d]", name(), get_address());
-  else if (strncmp(name(), "STR", 3) == 0)
-    sprintf(buffer, "%s: ACC -> [%d]", name(), get_address());
-  else if (strncmp(name(), "JMP", 3) == 0)
-    sprintf(buffer, "%s: PC  <- %d", name(), get_address());
-  else if (strncmp(name(), "JNE", 3) == 0)
-    sprintf(buffer, "%s: PC  <- %d if ACC != 0", name(), get_address());
-  else
-    // This should never happen unless we have an error in name() or one of the strncmp's above
-    // i.e. the tests will never try to trigger this code
-    assert(0);
-  return buffer;
+    char* buffer = (char*)malloc(256); // Increased size for safety
+    if (!buffer) {
+        fprintf(stderr, "Memory allocation failed in to_string().\n");
+        std::terminate();
+    }
+    if (strncmp(name(), "ADD", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC <- ACC + [%d]", name(), get_address());
+    else if (strncmp(name(), "AND", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC <- ACC & [%d]", name(), get_address());
+    else if (strncmp(name(), "ORR", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC <- ACC | [%d]", name(), get_address());
+    else if (strncmp(name(), "XOR", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC <- ACC ^ [%d]", name(), get_address());
+    else if (strncmp(name(), "LDR", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC <- [%d]", name(), get_address());
+    else if (strncmp(name(), "STR", 3) == 0)
+        snprintf(buffer, 256, "%s: ACC -> [%d]", name(), get_address());
+    else if (strncmp(name(), "JMP", 3) == 0)
+        snprintf(buffer, 256, "%s: PC  <- %d", name(), get_address());
+    else if (strncmp(name(), "JNE", 3) == 0)
+        snprintf(buffer, 256, "%s: PC  <- %d if ACC != 0", name(), get_address());
+    else
+        assert(0);
+    return buffer;
 }
 
-InstructionBase* InstructionBase::generateInstruction(InstructionData data) {
-  // This could be a switch-case, but it's not important
-  if (data.opcode == ADD)
-    return new Iadd(data.address);
-  if (data.opcode == AND)
-    return new Iand(data.address);
-  if (data.opcode == ORR)
-    return new Iorr(data.address);
-  if (data.opcode == XOR)
-    return new Ixor(data.address);
-  if (data.opcode == LDR)
-    return new Ildr(data.address);
-  if (data.opcode == STR)
-    return new Istr(data.address);
-  if (data.opcode == JMP)
-    return new Ijmp(data.address);
-  if (data.opcode == JNE)
-    return new Ijne(data.address);
 
-  return NULL;
+#include <memory> // For std::unique_ptr
+
+std::unique_ptr<InstructionBase> InstructionBase::generateInstruction(InstructionData data) {
+    if (data.opcode == ADD)
+        return std::make_unique<Iadd>(data.address);
+    if (data.opcode == AND)
+        return std::make_unique<Iand>(data.address);
+    if (data.opcode == ORR)
+        return std::make_unique<Iorr>(data.address);
+    if (data.opcode == XOR)
+        return std::make_unique<Ixor>(data.address);
+    if (data.opcode == LDR)
+        return std::make_unique<Ildr>(data.address);
+    if (data.opcode == STR)
+        return std::make_unique<Istr>(data.address);
+    if (data.opcode == JMP)
+        return std::make_unique<Ijmp>(data.address);
+    if (data.opcode == JNE)
+        return std::make_unique<Ijne>(data.address);
+
+    return nullptr;
 }
+
 
 // ========== ADD Instruction ==========
 Iadd::Iadd(addr_t address) {
