@@ -1,1 +1,0 @@
-/usr/bin/c++ -Og -g -Wall -Wextra -Wpedantic "CMakeFiles/functional-tests.dir/functional-tests.cpp.o" -o functional-tests  libemulator.a libcatch.a

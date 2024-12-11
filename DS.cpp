@@ -1,1 +1,0 @@
-/home/mary/Downloads/CursorMovment.cpp

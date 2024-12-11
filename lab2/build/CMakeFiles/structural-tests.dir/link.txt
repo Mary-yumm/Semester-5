@@ -1,1 +1,0 @@
-/usr/bin/c++ -Og -g -Wall -Wextra -Wpedantic "CMakeFiles/structural-tests.dir/structural-tests.cpp.o" -o structural-tests  libemulator.a libcatch.a
