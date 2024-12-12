@@ -20,68 +20,72 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-#ifndef VL_BALL_HPP
-#define VL_BALL_HPP
 
-#include "interfaces.hpp"
+#ifndef VOLLEY_HPP
+#define VOLLEY_HPP
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include "constants.hpp"
 #include "entity.hpp"
+#include "character.hpp"
+#include "ball.hpp"
 #include "observer.hpp"
+#include "score.hpp"
+#include "sound.hpp"
 
 namespace vl {
-  class Ball: public Entity,  public ISolidObject, public ISoftObject, public IControllableObject {
+  class Volley: public IObserver
+  {
   public:
     /**
      * Constructor
-     * @param image file
-     * @param intial position
      */
-    Ball(const char* file, const sf::Vector2f& position, float friction);
+    Volley();
 
     /**
-     * Add an observer
-     * @param a observer object
+     * Constructor
      */
-    void setObserver(IObserver* observer);
+    ~Volley();
 
     /**
-     * Notify an event to the observer
-     * @param an event
+     * Launch application
      */
-    void notify(Event event);
+    void run();
 
     /**
-     * ISolidObject interface implementation
-     * @param another object
-     * @return true is the 2 objects are collinding
+     * Render sprites
      */
-    bool isCollidingWith(const IPhysicalObject& object) const;
+    void render();
 
     /**
-     * ISoftObject interface implementation
-     * @param another object
+     * Update state
      */
-    void bounce(const IPhysicalObject& object);
+    void update();
 
     /**
-     * Event handler
-     * @param an event
+     * Event notification handler
      */
-    void handleEvent(vl::Event e);
+    void onNotify(const vl::Event& event);
 
-    /**
-     * Upadte object at each frame
-     * @param time since last update
-     */
-    void update(float dt);
 
   private:
-    IObserver* _observer;
-    float preVelX;
-    float preVelY;
-  public:
-    int bounce_p1;
-    int bounce_p2;
+    void handleEvents();
+    void resolveCollisions();
+    void resolveGravity(double dt);
+    void reset();
+    std::array<vl::Character*, VL_NB_PLAYERS> _players;
+    std::array<sf::CircleShape*, VL_NB_SHADOWS> _shadows;
+    std::array<vl::Entity*, VL_NB_NP_ENTITIES> _sceneObjects;
+    std::array<vl::Sound*, VL_NB_SOUNDS> _sounds;
+    vl::Ball* _ball;
+    sf::RenderWindow* _window;
+    unsigned int _lastPlayer;
+    unsigned int _scores[2];
+    Score* _score;
+    void handlePauseEvent();
+    bool pause;
   };
-};
+}
 
 #endif

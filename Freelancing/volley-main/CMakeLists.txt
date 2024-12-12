@@ -21,6 +21,7 @@ set(SRC_FILES
     src/character.cpp
     src/score.cpp
     src/sound.cpp
+    src/menu.cpp
 )
 
 # Specify the runtime output directory for the executable

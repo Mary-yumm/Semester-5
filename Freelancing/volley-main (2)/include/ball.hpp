@@ -78,9 +78,6 @@ namespace vl {
     IObserver* _observer;
     float preVelX;
     float preVelY;
-  public:
-    int bounce_p1;
-    int bounce_p2;
   };
 };
 

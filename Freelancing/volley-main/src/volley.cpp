@@ -28,34 +28,53 @@ SOFTWARE. */
 #include <thread>
 #include <iostream>
 
-namespace vl {
+namespace vl
+{
 
-  static void _render(vl::Volley* app) {
+  static void _render(vl::Volley *app)
+  {
     app->render();
   }
-  static void _update(vl::Volley* app) {
+  static void _update(vl::Volley *app)
+  {
     app->update();
   }
 
-  Volley::Volley() {
+  Volley::Volley(bool isTwoVsTwo)
+  {
     XInitThreads();
     pause = false;
+    this->isTwoVsTwo = isTwoVsTwo;
 
     // Create SFML window
-    _window = new
-      sf::RenderWindow(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), VL_APP_TITLE);
+    _window = new sf::RenderWindow(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), VL_APP_TITLE);
     _window->setActive(false);
     _window->setFramerateLimit(VL_FPS);
 
-    // Create players sprite
-    _players[0] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH/4, 660), VL_PLAYER_FRICTION);
-    _players[0]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH/2 - 4*VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+    // Initialize players based on the mode
+    if (isTwoVsTwo)
+    {
+      _players[0] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4, 660), VL_PLAYER_FRICTION);
+      _players[1] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600), VL_PLAYER_FRICTION);
+      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660), VL_PLAYER_FRICTION);
+      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600), VL_PLAYER_FRICTION);
 
-    _players[1] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3*VL_WINDOW_WIDTH/4, 600), VL_PLAYER_FRICTION);
-    _players[1]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH/2 + 4*VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH/2 - 4*VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+      _players[0]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+      _players[1]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+      _players[2]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+      _players[3]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+    }
+    else
+    {
+      _players[0] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4, 660), VL_PLAYER_FRICTION);
+      _players[1] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600), VL_PLAYER_FRICTION);
+
+      _players[0]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+      _players[1]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+    }
 
     // Create ball sprite
-    _ball = new vl::Ball(VL_ASSET_IMG_BALL, sf::Vector2f(5*VL_WINDOW_WIDTH/8, 200), VL_BALL_FRICTION);
+    _ball = new vl::Ball(VL_ASSET_IMG_BALL, sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 200), VL_BALL_FRICTION);
     _ball->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH - VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
     _ball->setObserver(this);
 
@@ -66,10 +85,11 @@ namespace vl {
     _lastPlayer = 0u;
 
     // Create shadows
-    for (auto& shadow: _shadows) {
-      shadow = new sf::CircleShape(VL_SHADOW_WIDTH/2, 10u);
-      shadow->setFillColor(sf::Color(200u,200u,200u));
-      shadow->setOrigin(VL_SHADOW_WIDTH/2, 0u);
+    for (auto &shadow : _shadows)
+    {
+      shadow = new sf::CircleShape(VL_SHADOW_WIDTH / 2, 10u);
+      shadow->setFillColor(sf::Color(200u, 200u, 200u));
+      shadow->setOrigin(VL_SHADOW_WIDTH / 2, 0u);
       shadow->setScale(1.0f, 0.3f);
     }
 
@@ -80,50 +100,60 @@ namespace vl {
 
     _sounds[0] = new vl::Sound(VL_ASSET_SND_LOSE);
     _sounds[1] = new vl::Sound(VL_ASSET_SND_BOUNCE);
+
+    std::cout << "cons" << std::endl;
   }
 
-  Volley::~Volley() {
-    for (auto element: _sounds)
+  Volley::~Volley()
+  {
+    for (auto element : _sounds)
       delete element;
 
-    for (auto element: _sceneObjects)
+    for (auto element : _sceneObjects)
       delete element;
 
-    for (auto element: _shadows)
+    for (auto element : _shadows)
       delete element;
 
     delete _score;
     delete _ball;
 
-    for (auto element: _players)
+    for (auto element : _players)
       delete element;
 
     delete _window;
   }
 
-  void Volley::render() {
+  void Volley::render()
+  {
     sf::Clock clock;
 
-    while(_window->isOpen()){
+    while (_window->isOpen())
+    {
       _window->clear();
 
+      // Draw background and other scene objects
       _window->draw(_sceneObjects[0]->getSprite());
 
-      for (auto& shadow: _shadows)
+      for (auto &shadow : _shadows)
         _window->draw(*shadow);
 
-      _window->draw(_players[0]->getSprite());
-
-      if (_ball->getPosition().x < VL_WINDOW_WIDTH/2) {
-        _window->draw(_ball->getSprite());
-        _window->draw(_sceneObjects[2]->getSprite());
+      // Render players
+      if (isTwoVsTwo)
+      {
+        for (auto &player : _players)
+          if (player)
+            _window->draw(player->getSprite());
+      }
+      else
+      {
+        _window->draw(_players[0]->getSprite());
         _window->draw(_players[1]->getSprite());
-      } else {
-        _window->draw(_sceneObjects[2]->getSprite());
-        _window->draw(_players[1]->getSprite());
-        _window->draw(_ball->getSprite());
       }
 
+      // Render ball and other objects
+      _window->draw(_ball->getSprite());
+      _window->draw(_sceneObjects[2]->getSprite());
       _window->draw(_sceneObjects[1]->getSprite());
       _window->draw(_score->getSprite());
 
@@ -131,71 +161,189 @@ namespace vl {
     }
   }
 
+  void Volley::resolveCollisions()
+  {
+    static bool player1Collision = false;
+    static bool player2Collision = false;
+    static bool player3Collision = false;
+    static bool player4Collision = false;
 
-  void Volley::resolveCollisions() {
     auto angle = (_ball->getVelocity().x * 180.0f) / (32.0f * 3.14f);
     _ball->rotate(angle);
 
-    if (_ball->isCollidingWith(*_players[0])) {
-      _ball->bounce(*_players[0]);
-      _lastPlayer = 0u;
-      _sounds[1]->play();
+    if (_ball->isCollidingWith(*_players[0]))
+    {
+      if (!player1Collision)
+      {
+        std::cout << "p1" << std::endl;
+
+        _ball->bounce_p1++;
+        _ball->bounce_p2 = 0;
+        _ball->bounce(*_players[0]);
+        _lastPlayer = 0u;
+        _sounds[1]->play();
+        player1Collision = true;
+      }
+    }
+    else
+    {
+      player1Collision = false;
     }
 
-    if (_ball->isCollidingWith(*_players[1])) {
-      _ball->bounce(*_players[1]);
-      _lastPlayer = 1u;
-      _sounds[1]->play();
+    if (_ball->isCollidingWith(*_players[1]))
+    {
+      if (!player2Collision)
+      {
+        std::cout << "p2" << std::endl;
+
+        _ball->bounce_p1 = 0;
+        _ball->bounce_p2++;
+        _ball->bounce(*_players[1]);
+        _lastPlayer = 1u;
+        _sounds[1]->play();
+        player2Collision = true;
+      }
+    }
+    else
+    {
+      player2Collision = false;
+    }
+
+    if (isTwoVsTwo)
+    {
+      if (_ball->isCollidingWith(*_players[2]))
+      {
+        // Handle collision for Player [2]
+        if (!player3Collision)
+        {
+          std::cout << "p3" << std::endl;
+          _ball->bounce_p1++;
+          _ball->bounce_p2 = 0;
+          _ball->bounce(*_players[2]);
+          _lastPlayer = 0u;
+          _sounds[1]->play();
+          player3Collision = true;
+        }
+      }
+      else
+      {
+        player3Collision = false;
+      }
+
+      if (_ball->isCollidingWith(*_players[3]))
+      {
+        // Handle collision for Player [3]
+        if (!player4Collision)
+        {
+          std::cout << "p4" << std::endl;
+          _ball->bounce_p2++;
+          _ball->bounce_p1 = 0;
+          _ball->bounce(*_players[3]);
+          _lastPlayer = 1u;
+          _sounds[1]->play();
+          player4Collision = true;
+        }
+      }
+      else
+      {
+        player4Collision = false;
+      }
+    }
+
+    // Check if the ball is bounced three times without crossing the net
+    if (_ball->bounce_p1 > 3 || _ball->bounce_p2 > 3)
+    {
+      std::cout << "true" << std::endl;
+      _scores[1 - _lastPlayer]++;
+      _score->update(_scores[0], _scores[1]);
+      _sounds[0]->play();
+      reset();
+      return;
     }
 
     const sf::Vector2f p = _sceneObjects[2]->getPosition();
     const sf::Vector2u s = _sceneObjects[2]->getSize();
 
-    sf::FloatRect net_box(sf::Vector2f(p.x+s.x/2.0f - 10.0f, p.y+50.0f), sf::Vector2f(20.0f, 300.0f));
+    sf::FloatRect net_box(sf::Vector2f(p.x + s.x / 2.0f - 10.0f, p.y + 50.0f), sf::Vector2f(20.0f, 300.0f));
 
-    if (net_box.contains(_ball->getPosition())) {
-      _scores[1-_lastPlayer]++;
+    if (net_box.contains(_ball->getPosition()))
+    {
+      _scores[1 - _lastPlayer]++;
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
       reset();
-
     }
+    std::cout << "collision" << std::endl;
   }
 
-  void Volley::reset() {
+  void Volley::reset()
+  {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000u));
-    _ball->setPosition(sf::Vector2f(5*VL_WINDOW_WIDTH/8, 0));
-    _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH/4, 600));
-    _players[1]->setPosition(sf::Vector2f(3*VL_WINDOW_WIDTH/4, 600));
+    _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
+    _ball->bounce_p1 = 0; // Reset bounce counts
+    _ball->bounce_p2 = 0;
+    _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
+    _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+
+    if (isTwoVsTwo)
+    {
+      _players[2]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660));
+      _players[3]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600));
+      _players[2]->stop();
+      _players[3]->stop();
+    }
 
     _ball->stop();
     _players[0]->stop();
     _players[1]->stop();
+    std::cout << "reset" << std::endl;
   }
 
-  void Volley::update() {
+  void Volley::update()
+  {
     sf::Clock clock;
-    while(_window->isOpen()){
+    while (_window->isOpen())
+    {
       auto dt = clock.restart().asSeconds();
 
       resolveCollisions();
 
-      if (!pause){
+      if (!pause)
+      {
         _ball->update(dt);
-        for (auto& player: _players)
+        for (auto &player : _players)
           player->update(dt);
       }
 
-      for (int i=0; i<VL_NB_PLAYERS; i++) {
-        _shadows[i]->setPosition(_players[i]->getPosition().x, 690);
-        _shadows[i]->setScale(_players[i]->getPosition().y/700, 0.3*_players[i]->getPosition().y/700);
-      }
+      // Update shadows for all players and ball
 
-      _shadows[2]->setPosition(_ball->getPosition().x, 690);
-      _shadows[2]->setScale(_ball->getPosition().y/700, 0.3*_ball->getPosition().y/700);
+      if (isTwoVsTwo)
+      {
+        for (int i = 0; i < VL_NB_PLAYERS; i++)
+        {
+          if (_players[i])
+          {
+            _shadows[i]->setPosition(_players[i]->getPosition().x, 690);
+            _shadows[i]->setScale(_players[i]->getPosition().y / 700, 0.3 * _players[i]->getPosition().y / 700);
+          }
+        }
+        _shadows[4]->setPosition(_ball->getPosition().x, 690);
+        _shadows[4]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+      }
+      else
+      {
+        _shadows[0]->setPosition(_players[0]->getPosition().x, 690);
+        _shadows[0]->setScale(_players[0]->getPosition().y / 700, 0.3 * _players[0]->getPosition().y / 700);
+        _shadows[1]->setPosition(_players[1]->getPosition().x, 690);
+        _shadows[1]->setScale(_players[1]->getPosition().y / 700, 0.3 * _players[1]->getPosition().y / 700);
+
+        _shadows[2]->setPosition(_ball->getPosition().x, 690);
+        _shadows[2]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+      }
 
       std::this_thread::sleep_for(std::chrono::milliseconds(VL_UPDATE_THREAD_MS));
     }
+    std::cout << "update" << std::endl;
   }
 
   void Volley::handleEvents()
@@ -207,28 +355,50 @@ namespace vl {
       sf::Event event;
       while (_window->pollEvent(event))
       {
-        if(event.type == sf::Event::KeyPressed) {
-          if (pause){
-            switch(event.key.code) {
-              case sf::Keyboard::S: handlePauseEvent(); break;
+        if (event.type == sf::Event::KeyPressed)
+        {
+          if (pause)
+          {
+            switch (event.key.code)
+            {
+            case sf::Keyboard::S:
+              handlePauseEvent();
+              break;
             }
           }
-          else{
-            switch(event.key.code) {
-            case sf::Keyboard::P: handlePauseEvent(); break;
-            case sf::Keyboard::W: _players[0]->handleEvent(vl::Event::JUMP); break;
-            case sf::Keyboard::I: _players[1]->handleEvent(vl::Event::JUMP); break;
-            case sf::Keyboard::G: _ball->handleEvent(vl::Event::JUMP); break;
-            case sf::Keyboard::V: _ball->handleEvent(vl::Event::LEFT); break;
-            case sf::Keyboard::B: _ball->handleEvent(vl::Event::RIGHT); break;
-            case sf::Keyboard::Escape: _window->close(); break;
+          else
+          {
+            switch (event.key.code)
+            {
+            case sf::Keyboard::P:
+              handlePauseEvent();
+              break;
+            case sf::Keyboard::W:
+              _players[0]->handleEvent(vl::Event::JUMP);
+              break;
+            case sf::Keyboard::I:
+              _players[1]->handleEvent(vl::Event::JUMP);
+              break;
+            case sf::Keyboard::G:
+              _ball->handleEvent(vl::Event::JUMP);
+              break;
+            case sf::Keyboard::V:
+              _ball->handleEvent(vl::Event::LEFT);
+              break;
+            case sf::Keyboard::B:
+              _ball->handleEvent(vl::Event::RIGHT);
+              break;
+            case sf::Keyboard::Escape:
+              _window->close();
+              break;
             case sf::Keyboard::Space:
-              _ball->setPosition(sf::Vector2f(5*VL_WINDOW_WIDTH/8, 0));
-              _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH/4, 0));
-              _players[1]->setPosition(sf::Vector2f(3*VL_WINDOW_WIDTH/4, 0));
+              _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
+              _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
+              _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
               break;
 
-            default: break;
+            default:
+              break;
             }
           }
         }
@@ -249,13 +419,32 @@ namespace vl {
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
         _players[1]->handleEvent(vl::Event::RIGHT);
 
+      if (isTwoVsTwo)
+      {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+          _players[2]->handleEvent(vl::Event::LEFT);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+          _players[2]->handleEvent(vl::Event::RIGHT);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+          _players[2]->handleEvent(vl::Event::JUMP);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+          _players[3]->handleEvent(vl::Event::LEFT);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+          _players[3]->handleEvent(vl::Event::RIGHT);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+          _players[3]->handleEvent(vl::Event::JUMP);
+      }
+
       std::this_thread::sleep_for(std::chrono::milliseconds(VL_EVENT_THREAD_MS));
     }
   }
 
-  void Volley::onNotify(const vl::Event& event) {
-    if (event == vl::Event::BALL_FELL) {
-      if (_ball->getPosition().x < VL_WINDOW_WIDTH/2)
+  void Volley::onNotify(const vl::Event &event)
+  {
+    if (event == vl::Event::BALL_FELL)
+    {
+      if (_ball->getPosition().x < VL_WINDOW_WIDTH / 2)
         _scores[1]++;
       else
         _scores[0]++;
@@ -264,8 +453,8 @@ namespace vl {
       _sounds[0]->play();
 
       reset();
-   }
- }
+    }
+  }
 
   void Volley::run()
   {
@@ -276,7 +465,8 @@ namespace vl {
     render_thread.join();
   }
 
-  void Volley::handlePauseEvent() {
+  void Volley::handlePauseEvent()
+  {
     pause = !pause;
   }
 }

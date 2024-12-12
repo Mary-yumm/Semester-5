@@ -21,75 +21,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 
-#ifndef VOLLEY_HPP
-#define VOLLEY_HPP
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
-#include <array>
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "constants.hpp"
-#include "entity.hpp"
-#include "character.hpp"
-#include "ball.hpp"
-#include "observer.hpp"
-#include "score.hpp"
-#include "sound.hpp"
-
 
 namespace vl {
-  class Volley: public IObserver
-  {
-  public:
+  namespace utils {
     /**
-     * Constructor
+     * Compute square distance between 2 points
      */
-    Volley(bool isTwoVsTwo);
+    float sd(const sf::Vector2f& a, const sf::Vector2f& b);
 
     /**
-     * Constructor
+     * Compute vector coords from 2 points
      */
-    ~Volley();
+    sf::Vector2f v(const sf::Vector2f& a, const sf::Vector2f& b);
 
     /**
-     * Launch application
+     * Compute normalized vector coords from 2 points
      */
-    void run();
-
-    /**
-     * Render sprites
-     */
-    void render();
-
-    /**
-     * Update state
-     */
-    void update();
-
-    /**
-     * Event notification handler
-     */
-    void onNotify(const vl::Event& event);
-
-
-  private:
-    void handleEvents();
-    void resolveCollisions();
-    void resolveGravity(double dt);
-    void reset();
-    std::array<vl::Character*, VL_NB_PLAYERS> _players;
-    std::array<sf::CircleShape*, VL_NB_SHADOWS> _shadows;
-    std::array<vl::Entity*, VL_NB_NP_ENTITIES> _sceneObjects;
-    std::array<vl::Sound*, VL_NB_SOUNDS> _sounds;
-    vl::Ball* _ball;
-    sf::RenderWindow* _window;
-    unsigned int _lastPlayer;
-    unsigned int _scores[2];
-    Score* _score;
-    void handlePauseEvent();
-    bool pause;
-  public:
-    bool isTwoVsTwo;
-  };
+    sf::Vector2f nv(const sf::Vector2f& a, const sf::Vector2f& b);
+  }
 }
 
 #endif
