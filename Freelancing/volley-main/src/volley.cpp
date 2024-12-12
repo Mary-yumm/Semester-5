@@ -85,12 +85,25 @@ namespace vl
     _lastPlayer = 0u;
 
     // Create shadows
-    for (auto &shadow : _shadows)
+    if (isTwoVsTwo)
     {
-      shadow = new sf::CircleShape(VL_SHADOW_WIDTH / 2, 10u);
-      shadow->setFillColor(sf::Color(200u, 200u, 200u));
-      shadow->setOrigin(VL_SHADOW_WIDTH / 2, 0u);
-      shadow->setScale(1.0f, 0.3f);
+      for (auto &shadow : _shadows)
+      {
+        shadow = new sf::CircleShape(VL_SHADOW_WIDTH / 2, 10u);
+        shadow->setFillColor(sf::Color(200u, 200u, 200u));
+        shadow->setOrigin(VL_SHADOW_WIDTH / 2, 0u);
+        shadow->setScale(1.0f, 0.3f);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < 3; i++)
+      {
+        _shadows[i] = new sf::CircleShape(VL_SHADOW_WIDTH / 2, 10u);
+        _shadows[i]->setFillColor(sf::Color(200u, 200u, 200u));
+        _shadows[i]->setOrigin(VL_SHADOW_WIDTH / 2, 0u);
+        _shadows[i]->setScale(1.0f, 0.3f);
+      }
     }
 
     // Create other NP objects
@@ -135,8 +148,17 @@ namespace vl
       // Draw background and other scene objects
       _window->draw(_sceneObjects[0]->getSprite());
 
-      for (auto &shadow : _shadows)
-        _window->draw(*shadow);
+      if (isTwoVsTwo)
+      {
+        for (auto &shadow : _shadows)
+          _window->draw(*shadow);
+      }
+      else
+      {
+        _window->draw(*_shadows[0]);
+        _window->draw(*_shadows[1]);
+        _window->draw(*_shadows[2]);
+      }
 
       // Render players
       if (isTwoVsTwo)
@@ -311,8 +333,16 @@ namespace vl
       if (!pause)
       {
         _ball->update(dt);
-        for (auto &player : _players)
-          player->update(dt);
+        if (isTwoVsTwo)
+        {
+          for (auto &player : _players)
+            player->update(dt);
+        }
+        else
+        {
+          _players[0]->update(dt);
+          _players[1]->update(dt);
+        }
       }
 
       // Update shadows for all players and ball
