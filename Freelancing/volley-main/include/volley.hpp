@@ -20,7 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-
 #ifndef VOLLEY_HPP
 #define VOLLEY_HPP
 
@@ -35,9 +34,9 @@ SOFTWARE. */
 #include "score.hpp"
 #include "sound.hpp"
 
-
-namespace vl {
-  class Volley: public IObserver
+namespace vl
+{
+  class Volley : public IObserver
   {
   public:
     /**
@@ -68,25 +67,28 @@ namespace vl {
     /**
      * Event notification handler
      */
-    void onNotify(const vl::Event& event);
-
+    void onNotify(const vl::Event &event);
 
   private:
     void handleEvents();
     void resolveCollisions();
     void resolveGravity(double dt);
     void reset();
-    std::array<vl::Character*, VL_NB_PLAYERS> _players;
-    std::array<sf::CircleShape*, VL_NB_SHADOWS> _shadows;
-    std::array<vl::Entity*, VL_NB_NP_ENTITIES> _sceneObjects;
-    std::array<vl::Sound*, VL_NB_SOUNDS> _sounds;
-    vl::Ball* _ball;
-    sf::RenderWindow* _window;
+    std::array<vl::Character *, VL_NB_PLAYERS> _players;
+    std::array<sf::CircleShape *, VL_NB_SHADOWS> _shadows;
+    std::array<vl::Entity *, VL_NB_NP_ENTITIES> _sceneObjects;
+    std::array<vl::Sound *, VL_NB_SOUNDS> _sounds;
+    vl::Ball *_ball;
+    sf::RenderWindow *_window;
     unsigned int _lastPlayer;
     unsigned int _scores[2];
-    Score* _score;
+    Score *_score;
     void handlePauseEvent();
     bool pause;
+    bool scoreUpdated;
+    sf::Font font;             // Font for the text
+    sf::Text startMessage; // text obj for hit 1 to start message
+
   public:
     bool isTwoVsTwo;
   };

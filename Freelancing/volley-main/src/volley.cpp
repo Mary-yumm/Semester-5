@@ -42,8 +42,9 @@ namespace vl
 
   Volley::Volley(bool isTwoVsTwo)
   {
+    this->scoreUpdated = true;
+    this->pause = true;
     XInitThreads();
-    pause = false;
     this->isTwoVsTwo = isTwoVsTwo;
 
     // Create SFML window
@@ -56,8 +57,8 @@ namespace vl
     {
       _players[0] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4, 660), VL_PLAYER_FRICTION);
       _players[1] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600), VL_PLAYER_FRICTION);
-      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660), VL_PLAYER_FRICTION);
-      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600), VL_PLAYER_FRICTION);
+      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER3, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660), VL_PLAYER_FRICTION);
+      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER4, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600), VL_PLAYER_FRICTION);
 
       _players[0]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
       _players[1]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
@@ -115,6 +116,23 @@ namespace vl
     _sounds[1] = new vl::Sound(VL_ASSET_SND_BOUNCE);
 
     std::cout << "cons" << std::endl;
+
+    // Load a font (ensure the font file is accessible in the assets directory)
+    if (!font.loadFromFile("arial.ttf"))
+    {
+      std::cerr << "Error loading font file!" << std::endl;
+      exit(EXIT_FAILURE); // Exit if font loading fails
+    }
+    // Initialize the "Hit 1 to start" message
+    startMessage.setFont(font);                  // Set the font
+    startMessage.setString("Hit 1 to start");    // Message text
+    startMessage.setCharacterSize(50);           // Font size
+    startMessage.setFillColor(sf::Color::White); // Text color
+    startMessage.setStyle(sf::Text::Bold);       // Optional: Make it bold
+    startMessage.setPosition(
+        VL_WINDOW_WIDTH / 2 - 150, // X position (centered)
+        VL_WINDOW_HEIGHT / 2 - 50  // Y position
+    );
   }
 
   Volley::~Volley()
@@ -178,6 +196,11 @@ namespace vl
       _window->draw(_sceneObjects[2]->getSprite());
       _window->draw(_sceneObjects[1]->getSprite());
       _window->draw(_score->getSprite());
+
+      // Display "Hit 1 to start" only if pause is due to a score update
+      if (pause && scoreUpdated){
+        _window->draw(startMessage);
+      }
 
       _window->display();
     }
@@ -275,7 +298,6 @@ namespace vl
     // Check if the ball is bounced three times without crossing the net
     if (_ball->bounce_p1 > 3 || _ball->bounce_p2 > 3)
     {
-      std::cout << "true" << std::endl;
       _scores[1 - _lastPlayer]++;
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
@@ -295,7 +317,6 @@ namespace vl
       _sounds[0]->play();
       reset();
     }
-    std::cout << "collision" << std::endl;
   }
 
   void Volley::reset()
@@ -318,6 +339,9 @@ namespace vl
     _ball->stop();
     _players[0]->stop();
     _players[1]->stop();
+
+    this->pause = true;
+    this->scoreUpdated = true;
     std::cout << "reset" << std::endl;
   }
 
@@ -394,6 +418,12 @@ namespace vl
             case sf::Keyboard::S:
               handlePauseEvent();
               break;
+            case sf::Keyboard::Num1:
+              if (scoreUpdated)
+              {
+                pause = false;
+                scoreUpdated = false;
+              }
             }
           }
           else

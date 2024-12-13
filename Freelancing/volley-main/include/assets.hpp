@@ -27,6 +27,9 @@ SOFTWARE. */
 #define VL_ASSET_IMG_BALL    VL_ASSETS_IMG "ball.png"
 #define VL_ASSET_IMG_PLAYER1 VL_ASSETS_IMG "player.png"
 #define VL_ASSET_IMG_PLAYER2 VL_ASSETS_IMG "player2.png"
+#define VL_ASSET_IMG_PLAYER3 VL_ASSETS_IMG "player3.png"
+#define VL_ASSET_IMG_PLAYER4 VL_ASSETS_IMG "player4.png"
+
 #define VL_ASSET_IMG_BEACH   VL_ASSETS_IMG "beach.png"
 #define VL_ASSET_IMG_NET     VL_ASSETS_IMG "net.png"
 #define VL_ASSET_IMG_TREE    VL_ASSETS_IMG "tree.png"
