@@ -24,7 +24,7 @@ SOFTWARE. */
 #include "ball.hpp"
 #include "utils.hpp"
 #include "constants.hpp"
-#include<iostream>
+#include <iostream>
 
 namespace vl
 {
@@ -56,7 +56,7 @@ namespace vl
     std::cout << "Normalized velocity: v.x = " << v.x << ", v.y = " << v.y << std::endl;
 
     // Use larger bounds for testing
-    const float bounceFactor = 3.0f;             // Increase further if necessary
+    const float bounceFactor = 3.0f;              // Increase further if necessary
     _acceleration.x = bounceFactor * 10.0f * v.x; // Remove clamping temporarily
     _acceleration.y = bounceFactor * 10.0f * v.y; // Remove clamping temporarily
 
@@ -106,22 +106,30 @@ namespace vl
 
   void Ball::update(float dt)
   {
-    Entity::update(dt);
+    std::cout << "in ball update" << std::endl;
+
+    // Update position based on velocity and delta time
+    _position.x += _velocity.x * dt;
+    _position.y += _velocity.y * dt;
+
+    Entity::update(dt); // Use the actual delta time
 
     if (_position.x < VL_MARGIN)
     {
+      std::cout << "in ball update if 1st" << std::endl;
       _position.x = VL_MARGIN;
       _velocity.x *= -VL_BOUND_RESTITUTION / 2.0f;
     }
-
     else if (_position.x > (VL_WINDOW_WIDTH - VL_MARGIN))
     {
+      std::cout << "in ball update if 2nd" << std::endl;
       _position.x = (VL_WINDOW_WIDTH - VL_MARGIN);
       _velocity.x *= -VL_BOUND_RESTITUTION / 2.0f;
     }
 
     if (_position.y < 0)
     {
+      std::cout << "in ball update if 3rd" << std::endl;
       _velocity.y *= -VL_BOUND_RESTITUTION / 2.0f;
       _position.y = 1.0f;
     }
@@ -129,7 +137,11 @@ namespace vl
     auto size = getSize();
     if (_position.y > VL_FLOOR - (size.y / 2.0f) - 5.0f)
     {
+      std::cout << "in ball update if 4th" << std::endl;
       notify(vl::Event::BALL_FELL);
     }
+
+    std::cout << "in ball update end" << std::endl;
   }
+
 }

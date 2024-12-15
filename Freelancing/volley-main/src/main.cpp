@@ -36,6 +36,7 @@ SOFTWARE. */
 //   return 0;
 // }
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "Menu.hpp"
 #include "volley.hpp"
 
@@ -47,10 +48,10 @@ enum class AppState
     GAME_MODE_SELECTION
 };
 
-void showInstructions(sf::RenderWindow& window);
-void selectGameMode(sf::RenderWindow& window, bool& isTwoVsTwo);
+void showInstructions(sf::RenderWindow &window);
+void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo);
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
@@ -116,9 +117,15 @@ int main(int argc, char** argv)
         else if (currentState == AppState::GAME)
         {
             window.close(); // Close the menu window
-            vl::Volley* application = new vl::Volley(isTwoVsTwo);
+            vl::Volley *application = new vl::Volley(isTwoVsTwo);
             application->run();
-
+            std::cout << "mainnnn" << std::endl;
+            // Check if the game ended due to a winning condition
+            if (application->didSomeoneWin())
+            {
+                std::cout << "Displaying winning screen" << std::endl;
+                application->showWinningScreen(application->getWinner());
+            }
             delete application;
             currentState = AppState::MENU;
             window.create(sf::VideoMode(800, 600), "Volleyball Game Menu");
@@ -145,7 +152,7 @@ int main(int argc, char** argv)
 }
 
 // Function to display the instructions screen
-void showInstructions(sf::RenderWindow& window)
+void showInstructions(sf::RenderWindow &window)
 {
     sf::Font font;
     if (!font.loadFromFile("arial.ttf"))
@@ -178,7 +185,7 @@ void showInstructions(sf::RenderWindow& window)
 }
 
 // Function to display the game mode selection screen
-void selectGameMode(sf::RenderWindow& window, bool& isTwoVsTwo)
+void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo)
 {
     sf::Font font;
     if (!font.loadFromFile("arial.ttf"))
@@ -237,4 +244,3 @@ void selectGameMode(sf::RenderWindow& window, bool& isTwoVsTwo)
         }
     }
 }
-

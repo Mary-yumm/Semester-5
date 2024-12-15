@@ -33,18 +33,32 @@ namespace vl
 
   static void _render(vl::Volley *app)
   {
-    app->render();
+    sf::Context context; // Create an OpenGL context for this thread
+
+    while (!app->gameEnded)
+    {
+      app->render();
+    }
+
+    std::cout << "Render thread stopped." << std::endl;
   }
+
   static void _update(vl::Volley *app)
   {
-    app->update();
+    while (!app->gameEnded)
+    {
+      app->update();
+    }
+
+    std::cout << "Update thread stopped." << std::endl;
   }
 
   Volley::Volley(bool isTwoVsTwo)
   {
     this->scoreUpdated = true;
+    this->gameEnded = false;
     this->pause = true;
-    XInitThreads();
+    // XInitThreads();
     this->isTwoVsTwo = isTwoVsTwo;
 
     // Create SFML window
@@ -157,53 +171,54 @@ namespace vl
 
   void Volley::render()
   {
-    sf::Clock clock;
+    // sf::Clock clock;
 
-    while (_window->isOpen())
+    // while (_window->isOpen())
+    // {
+    _window->clear();
+
+    // Draw background and other scene objects
+    _window->draw(_sceneObjects[0]->getSprite());
+
+    if (isTwoVsTwo)
     {
-      _window->clear();
-
-      // Draw background and other scene objects
-      _window->draw(_sceneObjects[0]->getSprite());
-
-      if (isTwoVsTwo)
-      {
-        for (auto &shadow : _shadows)
-          _window->draw(*shadow);
-      }
-      else
-      {
-        _window->draw(*_shadows[0]);
-        _window->draw(*_shadows[1]);
-        _window->draw(*_shadows[2]);
-      }
-
-      // Render players
-      if (isTwoVsTwo)
-      {
-        for (auto &player : _players)
-          if (player)
-            _window->draw(player->getSprite());
-      }
-      else
-      {
-        _window->draw(_players[0]->getSprite());
-        _window->draw(_players[1]->getSprite());
-      }
-
-      // Render ball and other objects
-      _window->draw(_ball->getSprite());
-      _window->draw(_sceneObjects[2]->getSprite());
-      _window->draw(_sceneObjects[1]->getSprite());
-      _window->draw(_score->getSprite());
-
-      // Display "Hit 1 to start" only if pause is due to a score update
-      if (pause && scoreUpdated){
-        _window->draw(startMessage);
-      }
-
-      _window->display();
+      for (auto &shadow : _shadows)
+        _window->draw(*shadow);
     }
+    else
+    {
+      _window->draw(*_shadows[0]);
+      _window->draw(*_shadows[1]);
+      _window->draw(*_shadows[2]);
+    }
+
+    // Render players
+    if (isTwoVsTwo)
+    {
+      for (auto &player : _players)
+        if (player)
+          _window->draw(player->getSprite());
+    }
+    else
+    {
+      _window->draw(_players[0]->getSprite());
+      _window->draw(_players[1]->getSprite());
+    }
+
+    // Render ball and other objects
+    _window->draw(_ball->getSprite());
+    _window->draw(_sceneObjects[2]->getSprite());
+    _window->draw(_sceneObjects[1]->getSprite());
+    _window->draw(_score->getSprite());
+
+    // Display "Hit 1 to start" only if pause is due to a score update
+    if (pause && scoreUpdated)
+    {
+      _window->draw(startMessage);
+    }
+
+    _window->display();
+    //}
   }
 
   void Volley::resolveCollisions()
@@ -321,7 +336,7 @@ namespace vl
 
   void Volley::reset()
   {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000u));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(1000u));
     _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
     _ball->bounce_p1 = 0; // Reset bounce counts
     _ball->bounce_p2 = 0;
@@ -342,162 +357,166 @@ namespace vl
 
     this->pause = true;
     this->scoreUpdated = true;
+    if (_scores[0] == WINNING_SCORE || _scores[1] == WINNING_SCORE)
+    {
+      gameEnded = true;
+      std::cout << "game ended trueee" << std::endl;
+    }
+
     std::cout << "reset" << std::endl;
   }
 
   void Volley::update()
   {
-    sf::Clock clock;
-    while (_window->isOpen())
+    // sf::Clock clock;
+    //  while (_window->isOpen())
+    //  {
+    // auto dt = clock.restart().asSeconds();
+    auto dt = gameClock.restart().asSeconds();
+    resolveCollisions();
+
+    if (!pause)
     {
-      auto dt = clock.restart().asSeconds();
 
-      resolveCollisions();
-
-      if (!pause)
-      {
-        _ball->update(dt);
-        if (isTwoVsTwo)
-        {
-          for (auto &player : _players)
-            player->update(dt);
-        }
-        else
-        {
-          _players[0]->update(dt);
-          _players[1]->update(dt);
-        }
-      }
-
-      // Update shadows for all players and ball
-
+      _ball->update(dt);
       if (isTwoVsTwo)
       {
-        for (int i = 0; i < VL_NB_PLAYERS; i++)
-        {
-          if (_players[i])
-          {
-            _shadows[i]->setPosition(_players[i]->getPosition().x, 690);
-            _shadows[i]->setScale(_players[i]->getPosition().y / 700, 0.3 * _players[i]->getPosition().y / 700);
-          }
-        }
-        _shadows[4]->setPosition(_ball->getPosition().x, 690);
-        _shadows[4]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+        for (auto &player : _players)
+          player->update(dt);
       }
       else
       {
-        _shadows[0]->setPosition(_players[0]->getPosition().x, 690);
-        _shadows[0]->setScale(_players[0]->getPosition().y / 700, 0.3 * _players[0]->getPosition().y / 700);
-        _shadows[1]->setPosition(_players[1]->getPosition().x, 690);
-        _shadows[1]->setScale(_players[1]->getPosition().y / 700, 0.3 * _players[1]->getPosition().y / 700);
-
-        _shadows[2]->setPosition(_ball->getPosition().x, 690);
-        _shadows[2]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+        _players[0]->update(dt);
+        _players[1]->update(dt);
       }
-
-      std::this_thread::sleep_for(std::chrono::milliseconds(VL_UPDATE_THREAD_MS));
     }
+
+    // Update shadows for all players and ball
+
+    if (isTwoVsTwo)
+    {
+      for (int i = 0; i < VL_NB_PLAYERS; i++)
+      {
+        if (_players[i])
+        {
+          _shadows[i]->setPosition(_players[i]->getPosition().x, 690);
+          _shadows[i]->setScale(_players[i]->getPosition().y / 700, 0.3 * _players[i]->getPosition().y / 700);
+        }
+      }
+      _shadows[4]->setPosition(_ball->getPosition().x, 690);
+      _shadows[4]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+    }
+    else
+    {
+      _shadows[0]->setPosition(_players[0]->getPosition().x, 690);
+      _shadows[0]->setScale(_players[0]->getPosition().y / 700, 0.3 * _players[0]->getPosition().y / 700);
+      _shadows[1]->setPosition(_players[1]->getPosition().x, 690);
+      _shadows[1]->setScale(_players[1]->getPosition().y / 700, 0.3 * _players[1]->getPosition().y / 700);
+
+      _shadows[2]->setPosition(_ball->getPosition().x, 690);
+      _shadows[2]->setScale(_ball->getPosition().y / 700, 0.3 * _ball->getPosition().y / 700);
+    }
+
+    // std::this_thread::sleep_for(std::chrono::milliseconds(VL_UPDATE_THREAD_MS));
+    //}
     std::cout << "update" << std::endl;
   }
 
   void Volley::handleEvents()
   {
     // Start the game loop
-    while (_window->isOpen())
+    // Process events
+    sf::Event event;
+    while (_window->pollEvent(event))
     {
-      // Process events
-      sf::Event event;
-      while (_window->pollEvent(event))
+      if (event.type == sf::Event::KeyPressed)
       {
-        if (event.type == sf::Event::KeyPressed)
+        if (pause)
         {
-          if (pause)
+          switch (event.key.code)
           {
-            switch (event.key.code)
+          case sf::Keyboard::S:
+            handlePauseEvent();
+            break;
+          case sf::Keyboard::Num1:
+            if (scoreUpdated)
             {
-            case sf::Keyboard::S:
-              handlePauseEvent();
-              break;
-            case sf::Keyboard::Num1:
-              if (scoreUpdated)
-              {
-                pause = false;
-                scoreUpdated = false;
-              }
-            }
-          }
-          else
-          {
-            switch (event.key.code)
-            {
-            case sf::Keyboard::P:
-              handlePauseEvent();
-              break;
-            case sf::Keyboard::W:
-              _players[0]->handleEvent(vl::Event::JUMP);
-              break;
-            case sf::Keyboard::I:
-              _players[1]->handleEvent(vl::Event::JUMP);
-              break;
-            case sf::Keyboard::G:
-              _ball->handleEvent(vl::Event::JUMP);
-              break;
-            case sf::Keyboard::V:
-              _ball->handleEvent(vl::Event::LEFT);
-              break;
-            case sf::Keyboard::B:
-              _ball->handleEvent(vl::Event::RIGHT);
-              break;
-            case sf::Keyboard::Escape:
-              _window->close();
-              break;
-            case sf::Keyboard::Space:
-              _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
-              _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
-              _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
-              break;
-
-            default:
-              break;
+              pause = false;
+              scoreUpdated = false;
             }
           }
         }
+        else
+        {
+          switch (event.key.code)
+          {
+          case sf::Keyboard::P:
+            handlePauseEvent();
+            break;
+          case sf::Keyboard::W:
+            _players[0]->handleEvent(vl::Event::JUMP);
+            break;
+          case sf::Keyboard::I:
+            _players[1]->handleEvent(vl::Event::JUMP);
+            break;
+          case sf::Keyboard::G:
+            _ball->handleEvent(vl::Event::JUMP);
+            break;
+          case sf::Keyboard::V:
+            _ball->handleEvent(vl::Event::LEFT);
+            break;
+          case sf::Keyboard::B:
+            _ball->handleEvent(vl::Event::RIGHT);
+            break;
+          case sf::Keyboard::Escape:
+            _window->close();
+            break;
+          case sf::Keyboard::Space:
+            _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
+            _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
+            _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
+            break;
 
-        if (event.type == sf::Event::Closed)
-          _window->close();
+          default:
+            break;
+          }
+        }
       }
 
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        _players[0]->handleEvent(vl::Event::LEFT);
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        _players[0]->handleEvent(vl::Event::RIGHT);
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-        _players[1]->handleEvent(vl::Event::LEFT);
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-        _players[1]->handleEvent(vl::Event::RIGHT);
-
-      if (isTwoVsTwo)
-      {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-          _players[2]->handleEvent(vl::Event::LEFT);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
-          _players[2]->handleEvent(vl::Event::RIGHT);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-          _players[2]->handleEvent(vl::Event::JUMP);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-          _players[3]->handleEvent(vl::Event::LEFT);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-          _players[3]->handleEvent(vl::Event::RIGHT);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-          _players[3]->handleEvent(vl::Event::JUMP);
-      }
-
-      std::this_thread::sleep_for(std::chrono::milliseconds(VL_EVENT_THREAD_MS));
+      if (event.type == sf::Event::Closed)
+        _window->close();
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+      _players[0]->handleEvent(vl::Event::LEFT);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+      _players[0]->handleEvent(vl::Event::RIGHT);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+      _players[1]->handleEvent(vl::Event::LEFT);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+      _players[1]->handleEvent(vl::Event::RIGHT);
+
+    if (isTwoVsTwo)
+    {
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+        _players[2]->handleEvent(vl::Event::LEFT);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+        _players[2]->handleEvent(vl::Event::RIGHT);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+        _players[2]->handleEvent(vl::Event::JUMP);
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        _players[3]->handleEvent(vl::Event::LEFT);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        _players[3]->handleEvent(vl::Event::RIGHT);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        _players[3]->handleEvent(vl::Event::JUMP);
+    }
+
+    // std::this_thread::sleep_for(std::chrono::milliseconds(VL_EVENT_THREAD_MS));
   }
 
   void Volley::onNotify(const vl::Event &event)
@@ -518,15 +537,96 @@ namespace vl
 
   void Volley::run()
   {
-    std::thread render_thread(&_render, this);
-    std::thread update_thread(&_update, this);
-    handleEvents();
-    update_thread.join();
-    render_thread.join();
+    // Start rendering and updating threads
+    // std::thread render_thread(&_render, this);
+    // std::thread update_thread(&_update, this);
+
+    // Game loop
+    while (!gameEnded)
+    {
+      handleEvents();
+      update();
+      render();
+      // Exit if the window is closed
+      if (!_window->isOpen())
+      {
+        gameEnded = true;
+      }
+    }
+
+    std::cout << "Game ended. Closing window..." << std::endl;
+
+    // Wait for threads to stop
+    // render_thread.join();
+    // update_thread.join();
+    if (_window->isOpen())
+    {
+      _window->close();
+      std::cout << "Window closed successfully." << std::endl;
+    }
   }
 
   void Volley::handlePauseEvent()
   {
     pause = !pause;
   }
+  void Volley::showWinningScreen(unsigned int winner)
+  {
+    std::cout << "winning screen";
+    // Create a new SFML window for the winning screen
+    sf::RenderWindow winScreen(sf::VideoMode(800, 600), "Game Over");
+
+    // Font and text for the winning message
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf"))
+    {
+      std::cerr << "Error loading font!" << std::endl;
+      return;
+    }
+
+    sf::Text winMessage;
+    winMessage.setFont(font);
+    winMessage.setString(winner == 0 ? "Team 1 Wins!" : "Team 2 Wins!");
+    winMessage.setCharacterSize(50);
+    winMessage.setFillColor(sf::Color::White);
+    winMessage.setStyle(sf::Text::Bold);
+    winMessage.setPosition(200, 200);
+
+    sf::Text returnMessage;
+    returnMessage.setFont(font);
+    returnMessage.setString("Press Enter to return to Main Menu");
+    returnMessage.setCharacterSize(30);
+    returnMessage.setFillColor(sf::Color::White);
+    returnMessage.setPosition(150, 400);
+
+    // Event loop for the winning screen
+    while (winScreen.isOpen())
+    {
+      sf::Event event;
+      while (winScreen.pollEvent(event))
+      {
+        if (event.type == sf::Event::Closed ||
+            (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter))
+        {
+          winScreen.close(); // Close winning screen
+        }
+      }
+
+      winScreen.clear();
+      winScreen.draw(winMessage);
+      winScreen.draw(returnMessage);
+      winScreen.display();
+    }
+  }
+
+  bool Volley::didSomeoneWin()
+  {
+    return gameEnded;
+  }
+
+  int Volley::getWinner()
+  {
+    return (_scores[0] == WINNING_SCORE) ? 0 : 1;
+  }
+
 }
