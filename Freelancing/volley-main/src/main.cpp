@@ -39,6 +39,7 @@ SOFTWARE. */
 #include <iostream>
 #include "Menu.hpp"
 #include "volley.hpp"
+#include <memory>
 
 enum class AppState
 {
@@ -50,21 +51,30 @@ enum class AppState
 
 void showInstructions(sf::RenderWindow &window);
 void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo);
+void showWinningScreen(unsigned int winner, sf::RenderWindow &window, sf::Font &font);
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Volleyball Game Menu");
+    sf::RenderWindow window(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), "Volleyball Game Menu");
 
     vl::Menu menu(window.getSize().x, window.getSize().y);
 
     AppState currentState = AppState::MENU;
     bool isTwoVsTwo = false; // Tracks if the game mode is 2v2
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf"))
+    {
+        std::cerr << "Failed to load font\n";
+        return -1;
+    }
+    unsigned int winner = 0; // Store the winner for the winning screen
 
     while (window.isOpen())
     {
+        std::cout << "hyyyy" << std::endl;
         sf::Event event;
 
         // Handle events
@@ -107,32 +117,44 @@ int main(int argc, char **argv)
             }
         }
 
+        window.clear();
         // Render based on the current state
         if (currentState == AppState::MENU)
         {
-            window.clear();
             menu.draw(window);
             window.display();
         }
         else if (currentState == AppState::GAME)
         {
-            window.close(); // Close the menu window
+            // window.setVisible(false);
+            window.close();
             vl::Volley *application = new vl::Volley(isTwoVsTwo);
+            // application->run();
+            //std::unique_ptr<vl::Volley> application = std::make_unique<vl::Volley>(isTwoVsTwo);
             application->run();
+
             std::cout << "mainnnn" << std::endl;
             // Check if the game ended due to a winning condition
-            if (application->didSomeoneWin())
-            {
-                std::cout << "Displaying winning screen" << std::endl;
-                application->showWinningScreen(application->getWinner());
-            }
-            delete application;
+            // if (application->didSomeoneWin())
+            // {
+            //     window.setVisible(true); // Show the main menu again
+            //     window.clear();
+            //     currentState = AppState::MENU;
+            //     std::cout << "Displaying winning screen" << application->getWinner() << std::endl;
+            //     // sf::RenderWindow winScreen(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), "Game Over");
+            //     //showWinningScreen(application->getWinner(), window, font);
+            //     // winScreen.close();
+            //     // std::cout << "Screen closed successfully" << std::endl;
+            // }
+
+            //delete application;
+            std::cout << "width and height: " << VL_WINDOW_WIDTH << " " << VL_WINDOW_HEIGHT << std::endl;
+            window.create(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), "Volleyball Game Menu");
             currentState = AppState::MENU;
-            window.create(sf::VideoMode(800, 600), "Volleyball Game Menu");
+            //application.reset(); // Explicitly clean up the game application
         }
         else if (currentState == AppState::INSTRUCTIONS)
         {
-            window.clear();
             showInstructions(window);
 
             // Return to menu after displaying instructions
@@ -140,15 +162,76 @@ int main(int argc, char **argv)
         }
         else if (currentState == AppState::GAME_MODE_SELECTION)
         {
-            window.clear();
             selectGameMode(window, isTwoVsTwo);
 
             // Return to menu after selecting game mode
             currentState = AppState::MENU;
         }
+        std::cout << "heyyyyy" << std::endl;
     }
 
     return 0;
+}
+
+void showWinningScreen(unsigned int winner, sf::RenderWindow &window, sf::Font &font)
+{
+    std::cout << "heyyiii" << std::endl;
+
+    sf::Text winMessage;
+    winMessage.setFont(font);
+    winMessage.setString(winner == 0 ? "Team/Player 1 Wins!" : "Team/Player 2 Wins!");
+    winMessage.setCharacterSize(50);
+    winMessage.setFillColor(sf::Color::White);
+    winMessage.setStyle(sf::Text::Bold);
+
+    sf::FloatRect winBounds = winMessage.getGlobalBounds();
+    winMessage.setPosition(
+        (window.getSize().x - winBounds.width) / 2,
+        (window.getSize().y - winBounds.height) / 3);
+
+    sf::Text returnMessage;
+    returnMessage.setFont(font);
+    returnMessage.setString("Press Enter to return to Main Menu");
+    returnMessage.setCharacterSize(30);
+    returnMessage.setFillColor(sf::Color::White);
+
+    sf::FloatRect returnBounds = returnMessage.getGlobalBounds();
+    returnMessage.setPosition(
+        (window.getSize().x - returnBounds.width) / 2,
+        (window.getSize().y - returnBounds.height) / 1.5);
+    std::cout << "heyyiii2" << std::endl;
+    window.clear();
+    window.draw(winMessage);
+    window.draw(returnMessage);
+    window.display();
+    // while (true)
+    // {
+    //     sf::Event event;
+
+    //     while (window.pollEvent(event))
+    //     {
+    //         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+    //         {
+    //             return;
+    //         }
+    //         if (event.type == sf::Event::Closed)
+    //         {
+    //             std::cout << "close" << std::endl;
+
+    //             window.close();
+    //             return;
+    //         }
+    //     }
+    // }
+    // Wait for a key press to return to the menu
+    sf::Event event;
+    while (window.waitEvent(event))
+    {
+        if (event.type == sf::Event::KeyPressed)
+            break;
+    }
+
+    std::cout << "end" << std::endl;
 }
 
 // Function to display the instructions screen
@@ -165,8 +248,12 @@ void showInstructions(sf::RenderWindow &window)
     instructions.setString(
         "Instructions:\n"
         "- Use arrow keys to navigate the menu.\n"
-        "- Press Enter to select an option.\n"
-        "- In the game, use the controls as described.\n"
+        "- Press Enter to go back to the main menu.\n"
+        "- Player 1 controls : W,A,D.\n"
+        "- Player 2 controls : I,J,L\n"
+        "- Player 3 controls : F,T,H\n"
+        "- Player 4 controls : Arrow Keys\n"
+        "- Press P to pause the game\n"
         "- Have fun playing the volleyball game!");
     instructions.setCharacterSize(20);
     instructions.setFillColor(sf::Color::White);

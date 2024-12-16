@@ -33,6 +33,7 @@ SOFTWARE. */
 #include "observer.hpp"
 #include "score.hpp"
 #include "sound.hpp"
+#include "pauseMenu.hpp"
 
 namespace vl
 {
@@ -93,6 +94,12 @@ namespace vl
     sf::Text startMessage; // text obj for hit 1 to start message
     int WINNING_SCORE = 3; // Define winning score
     sf::Clock gameClock;
+    int latest_score;
+    vl::PauseMenu pauseMenu; // Instance of PauseMenu
+    sf::Text player1Message;
+    sf::Text player2Message;
+    sf::Text winMessage;
+    sf::Text returnMessage;
 
   public:
     bool isTwoVsTwo;

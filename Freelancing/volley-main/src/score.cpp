@@ -45,6 +45,7 @@ namespace vl {
   }
 
   void Score::update(unsigned int s1, unsigned int s2) {
+    std::cout<<"in score update"<<std::endl;
     std::ostringstream stream;
     stream << s1 << " - " << s2;
     _text.setString(stream.str().c_str());

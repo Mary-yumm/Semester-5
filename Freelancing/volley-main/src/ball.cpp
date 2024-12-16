@@ -34,6 +34,8 @@ namespace vl
     _friction = friction;
     bounce_p1 = 0;
     bounce_p2 = 0;
+    bounce_p3 = 0;
+    bounce_p4 = 0;
   }
 
   bool Ball::isCollidingWith(const IPhysicalObject &object) const
@@ -106,7 +108,6 @@ namespace vl
 
   void Ball::update(float dt)
   {
-    std::cout << "in ball update" << std::endl;
 
     // Update position based on velocity and delta time
     _position.x += _velocity.x * dt;
@@ -116,20 +117,17 @@ namespace vl
 
     if (_position.x < VL_MARGIN)
     {
-      std::cout << "in ball update if 1st" << std::endl;
       _position.x = VL_MARGIN;
       _velocity.x *= -VL_BOUND_RESTITUTION / 2.0f;
     }
     else if (_position.x > (VL_WINDOW_WIDTH - VL_MARGIN))
     {
-      std::cout << "in ball update if 2nd" << std::endl;
       _position.x = (VL_WINDOW_WIDTH - VL_MARGIN);
       _velocity.x *= -VL_BOUND_RESTITUTION / 2.0f;
     }
 
     if (_position.y < 0)
     {
-      std::cout << "in ball update if 3rd" << std::endl;
       _velocity.y *= -VL_BOUND_RESTITUTION / 2.0f;
       _position.y = 1.0f;
     }
@@ -137,11 +135,9 @@ namespace vl
     auto size = getSize();
     if (_position.y > VL_FLOOR - (size.y / 2.0f) - 5.0f)
     {
-      std::cout << "in ball update if 4th" << std::endl;
       notify(vl::Event::BALL_FELL);
     }
 
-    std::cout << "in ball update end" << std::endl;
   }
 
 }

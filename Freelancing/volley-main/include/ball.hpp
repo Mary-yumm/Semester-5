@@ -81,6 +81,8 @@ namespace vl {
   public:
     int bounce_p1;
     int bounce_p2;
+    int bounce_p3;
+    int bounce_p4;
   };
 };
 
