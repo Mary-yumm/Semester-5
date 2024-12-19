@@ -74,7 +74,6 @@ int main(int argc, char **argv)
 
     while (window.isOpen())
     {
-        std::cout << "hyyyy" << std::endl;
         sf::Event event;
 
         // Handle events
@@ -126,32 +125,13 @@ int main(int argc, char **argv)
         }
         else if (currentState == AppState::GAME)
         {
-            // window.setVisible(false);
             window.close();
             vl::Volley *application = new vl::Volley(isTwoVsTwo);
-            // application->run();
-            //std::unique_ptr<vl::Volley> application = std::make_unique<vl::Volley>(isTwoVsTwo);
             application->run();
+            isTwoVsTwo = false; // Tracks if the game mode is 2v2
 
-            std::cout << "mainnnn" << std::endl;
-            // Check if the game ended due to a winning condition
-            // if (application->didSomeoneWin())
-            // {
-            //     window.setVisible(true); // Show the main menu again
-            //     window.clear();
-            //     currentState = AppState::MENU;
-            //     std::cout << "Displaying winning screen" << application->getWinner() << std::endl;
-            //     // sf::RenderWindow winScreen(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), "Game Over");
-            //     //showWinningScreen(application->getWinner(), window, font);
-            //     // winScreen.close();
-            //     // std::cout << "Screen closed successfully" << std::endl;
-            // }
-
-            //delete application;
-            std::cout << "width and height: " << VL_WINDOW_WIDTH << " " << VL_WINDOW_HEIGHT << std::endl;
             window.create(sf::VideoMode(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT), "Volleyball Game Menu");
             currentState = AppState::MENU;
-            //application.reset(); // Explicitly clean up the game application
         }
         else if (currentState == AppState::INSTRUCTIONS)
         {
@@ -167,71 +147,9 @@ int main(int argc, char **argv)
             // Return to menu after selecting game mode
             currentState = AppState::MENU;
         }
-        std::cout << "heyyyyy" << std::endl;
     }
 
     return 0;
-}
-
-void showWinningScreen(unsigned int winner, sf::RenderWindow &window, sf::Font &font)
-{
-    std::cout << "heyyiii" << std::endl;
-
-    sf::Text winMessage;
-    winMessage.setFont(font);
-    winMessage.setString(winner == 0 ? "Team/Player 1 Wins!" : "Team/Player 2 Wins!");
-    winMessage.setCharacterSize(50);
-    winMessage.setFillColor(sf::Color::White);
-    winMessage.setStyle(sf::Text::Bold);
-
-    sf::FloatRect winBounds = winMessage.getGlobalBounds();
-    winMessage.setPosition(
-        (window.getSize().x - winBounds.width) / 2,
-        (window.getSize().y - winBounds.height) / 3);
-
-    sf::Text returnMessage;
-    returnMessage.setFont(font);
-    returnMessage.setString("Press Enter to return to Main Menu");
-    returnMessage.setCharacterSize(30);
-    returnMessage.setFillColor(sf::Color::White);
-
-    sf::FloatRect returnBounds = returnMessage.getGlobalBounds();
-    returnMessage.setPosition(
-        (window.getSize().x - returnBounds.width) / 2,
-        (window.getSize().y - returnBounds.height) / 1.5);
-    std::cout << "heyyiii2" << std::endl;
-    window.clear();
-    window.draw(winMessage);
-    window.draw(returnMessage);
-    window.display();
-    // while (true)
-    // {
-    //     sf::Event event;
-
-    //     while (window.pollEvent(event))
-    //     {
-    //         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
-    //         {
-    //             return;
-    //         }
-    //         if (event.type == sf::Event::Closed)
-    //         {
-    //             std::cout << "close" << std::endl;
-
-    //             window.close();
-    //             return;
-    //         }
-    //     }
-    // }
-    // Wait for a key press to return to the menu
-    sf::Event event;
-    while (window.waitEvent(event))
-    {
-        if (event.type == sf::Event::KeyPressed)
-            break;
-    }
-
-    std::cout << "end" << std::endl;
 }
 
 // Function to display the instructions screen
@@ -254,11 +172,22 @@ void showInstructions(sf::RenderWindow &window)
         "- Player 3 controls : F,T,H\n"
         "- Player 4 controls : Arrow Keys\n"
         "- Press P to pause the game\n"
+        "- Press b/v to adjsut ball position during serving. G to drop\n"
         "- Have fun playing the volleyball game!");
     instructions.setCharacterSize(20);
     instructions.setFillColor(sf::Color::White);
-    instructions.setPosition(50, 50);
 
+    // Get the size of the text and the window
+    sf::FloatRect textBounds = instructions.getLocalBounds();
+    sf::Vector2u windowSize = window.getSize();
+
+    // Calculate centered position
+    float x = (windowSize.x - textBounds.width) / 2.0f - textBounds.left;
+    float y = (windowSize.y - textBounds.height) / 2.0f - textBounds.top;
+    instructions.setPosition(x, y);
+
+    // Draw the instructions
+    window.clear(); // Clear the window to avoid overlapping
     window.draw(instructions);
     window.display();
 

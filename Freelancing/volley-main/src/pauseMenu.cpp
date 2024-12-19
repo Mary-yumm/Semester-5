@@ -12,8 +12,7 @@ PauseMenu::PauseMenu(float width, float height) : selectedOptionIndex(0) {
         "Resume",
         "Start New Game",
         "Change Game Mode",
-        "View Instructions",
-        "Exit"
+        "Exit to Main Menu"
     };
 
     for (size_t i = 0; i < options.size(); ++i) {

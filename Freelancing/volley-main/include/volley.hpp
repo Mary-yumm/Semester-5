@@ -69,9 +69,10 @@ namespace vl
      * Event notification handler
      */
     void onNotify(const vl::Event &event);
-    void showWinningScreen(unsigned int winner);
     bool didSomeoneWin();
     int getWinner();
+    void changeGameMode();
+    void newGame();
 
   private:
     void handleEvents();
@@ -92,7 +93,7 @@ namespace vl
     bool scoreUpdated;
     sf::Font font;         // Font for the text
     sf::Text startMessage; // text obj for hit 1 to start message
-    int WINNING_SCORE = 3; // Define winning score
+    int WINNING_SCORE = 21; // Define winning score
     sf::Clock gameClock;
     int latest_score;
     vl::PauseMenu pauseMenu; // Instance of PauseMenu
@@ -100,6 +101,7 @@ namespace vl
     sf::Text player2Message;
     sf::Text winMessage;
     sf::Text returnMessage;
+    bool isBallStatic = true; // Ball starts static
 
   public:
     bool isTwoVsTwo;

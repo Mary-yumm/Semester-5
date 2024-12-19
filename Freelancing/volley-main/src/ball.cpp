@@ -43,27 +43,14 @@ namespace vl
     return vl::utils::sd(object.getPosition() - sf::Vector2f(0.0f, 65.0f), _position) < VL_DIST_BEFORE_COLLISION;
   }
 
-  // void Ball::bounce(const IPhysicalObject &object)
-  // {
-  //   const sf::Vector2f &v = vl::utils::nv(_position, (object.getPosition() - sf::Vector2f(0.0, 65.0f)));
-  //   _acceleration.x = std::min<float>(10.0f * v.x, 2.0f);
-  //   _acceleration.y = std::min<float>(10.0f * v.y, 2.0f);
-  // }
-
   void Ball::bounce(const IPhysicalObject &object)
   {
     const sf::Vector2f &v = vl::utils::nv(_position, (object.getPosition() - sf::Vector2f(0.0f, 65.0f)));
-
-    // Debugging normalized velocity
-    std::cout << "Normalized velocity: v.x = " << v.x << ", v.y = " << v.y << std::endl;
 
     // Use larger bounds for testing
     const float bounceFactor = 3.0f;              // Increase further if necessary
     _acceleration.x = bounceFactor * 10.0f * v.x; // Remove clamping temporarily
     _acceleration.y = bounceFactor * 10.0f * v.y; // Remove clamping temporarily
-
-    // Debugging acceleration
-    std::cout << "Acceleration: x = " << _acceleration.x << ", y = " << _acceleration.y << std::endl;
   }
 
   void Ball::setObserver(IObserver *observer)
@@ -94,16 +81,28 @@ namespace vl
       break;
 
     case Event::RIGHT:
-      move(sf::Vector2f(VL_MOVE_STEP, 0.0f));
+      if (_area.contains(_position + sf::Vector2f(VL_MOVE_STEP, 0.0f)))
+      {
+        _position.x += VL_MOVE_STEP; // Move directly to the right
+        setPosition(_position);      // Update the sprite's position
+      }
       break;
 
     case Event::LEFT:
-      move(sf::Vector2f(-VL_MOVE_STEP, 0.0f));
+
+      if (_area.contains(_position + sf::Vector2f(-VL_MOVE_STEP, 0.0f)))
+      {
+
+        _position.x -= VL_MOVE_STEP; // Move directly to the left
+        setPosition(_position);      // Update the sprite's position
+      }
+
       break;
 
     default:
       break;
     }
+    _sprite.setPosition(_position);
   }
 
   void Ball::update(float dt)
@@ -137,7 +136,6 @@ namespace vl
     {
       notify(vl::Event::BALL_FELL);
     }
-
   }
 
 }
