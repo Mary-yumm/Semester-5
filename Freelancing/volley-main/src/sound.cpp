@@ -23,13 +23,32 @@ SOFTWARE. */
 #include "sound.hpp"
 
 namespace vl {
+
+/**
+ * @brief Construct a new Sound object.
+ * 
+ * This constructor initializes the sound object by loading the sound file
+ * specified by the given file path and setting it to the sound buffer.
+ * 
+ * @param file The path to the sound file to be loaded into the sound buffer.
+ */
   Sound::Sound(const char* file): _sound(), _buffer() {
-    _buffer.loadFromFile(file);
+    if (!_buffer.loadFromFile(file)) {
+      throw std::runtime_error("Failed to load sound file");
+    }
     _sound.setBuffer(_buffer);
   }
 
+  /**
+   * @brief Play the sound.
+   * 
+   * Plays the sound if it is not already playing. The method checks the
+   * current status of the sound and only plays it if it is not already
+   * playing to avoid multiple overlapping plays.
+   */
   void Sound::play() {
     if (_sound.getStatus() != sf::Sound::Status::Playing)
       _sound.play();
   }
 };
+
