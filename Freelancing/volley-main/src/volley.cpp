@@ -38,6 +38,8 @@ namespace vl
     this->gameEnded = false;
     this->pause = false;
     this->latest_score = -1;
+    this->TeamPlayerServe1 = false;
+    this->TeamPlayerServe2 = false;
 
     // XInitThreads();
     this->isTwoVsTwo = isTwoVsTwo;
@@ -52,8 +54,8 @@ namespace vl
     {
       _players[0] = new vl::Character(VL_ASSET_IMG_PLAYER1, sf::Vector2f(VL_WINDOW_WIDTH / 4, 660), VL_PLAYER_FRICTION);
       _players[1] = new vl::Character(VL_ASSET_IMG_PLAYER2, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600), VL_PLAYER_FRICTION);
-      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER3, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660), VL_PLAYER_FRICTION);
-      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER4, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600), VL_PLAYER_FRICTION);
+      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER3, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 150, 660), VL_PLAYER_FRICTION);
+      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER4, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 150, 600), VL_PLAYER_FRICTION);
 
       _players[0]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
       _players[1]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
@@ -210,13 +212,11 @@ namespace vl
 
     if (serve_side == 0)
     {
-      std::cout << "left" << std::endl;
       // Position the ball for Player 1 (left side)
       _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175)); // Left player's position
     }
     else
     {
-      std::cout << "right" << std::endl;
 
       // Position the ball for Player 2 (right side)
       _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175)); // Right player's position
@@ -229,8 +229,8 @@ namespace vl
     if (!isTwoVsTwo)
     {
       this->isTwoVsTwo = true;
-      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER3, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660), VL_PLAYER_FRICTION);
-      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER4, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600), VL_PLAYER_FRICTION);
+      _players[2] = new vl::Character(VL_ASSET_IMG_PLAYER3, sf::Vector2f(VL_WINDOW_WIDTH / 4 - 150, 660), VL_PLAYER_FRICTION);
+      _players[3] = new vl::Character(VL_ASSET_IMG_PLAYER4, sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 150, 600), VL_PLAYER_FRICTION);
 
       _players[2]->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
       _players[3]->setPlayableArea(sf::FloatRect(VL_WINDOW_WIDTH / 2 + 4 * VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH / 2 - 4 * VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
@@ -432,9 +432,15 @@ namespace vl
       latest_score = 1 - _lastPlayer;
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
+      if (1 - _lastPlayer == 0)
+      {
+        TeamPlayerServe1 = !TeamPlayerServe1;
+      }
+      else
+      {
+        TeamPlayerServe2 = !TeamPlayerServe2;
+      }
       reset();
-      TeamPlayerServe = !TeamPlayerServe;
-
       return;
     }
 
@@ -448,8 +454,15 @@ namespace vl
       _scores[1 - _lastPlayer]++;
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
+      if (1 - _lastPlayer == 0)
+      {
+        TeamPlayerServe1 = !TeamPlayerServe1;
+      }
+      else
+      {
+        TeamPlayerServe2 = !TeamPlayerServe2;
+      }
       reset();
-      TeamPlayerServe = !TeamPlayerServe;
     }
   }
 
@@ -459,34 +472,52 @@ namespace vl
     {
       _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175)); // Position on Player 1's side
 
-      if (TeamPlayerServe)
-      { //1
-      }
-      else // 0
+      if (isTwoVsTwo)
       {
+        if (TeamPlayerServe1)
+        { // 1
+          _players[2]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
+          _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 - 150, 660));
+        }
+        else // 0
+        {
+          _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
+          _players[2]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 - 150, 660));
+        }
+        _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+        _players[3]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 150, 600));
       }
     }
     else if (latest_score == 1) // Player 2 (right side) is leading
     {
       _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175)); // Position on Player 2's side
-
-      if (TeamPlayerServe) // 1
+      if (isTwoVsTwo)
       {
-      }
-      else // 0
-      {
+        if (TeamPlayerServe2) // 1
+        {
+          _players[3]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+          _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 150, 600));
+        }
+        else // 0
+        {
+          _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+          _players[3]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 150, 600));
+        }
+        _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
+        _players[2]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 - 150, 660));
       }
     }
 
     _ball->bounce_p1 = 0; // Reset bounce counts
     _ball->bounce_p2 = 0;
-    _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
-    _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+    if (!isTwoVsTwo)
+    {
+      _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
+      _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 600));
+    }
 
     if (isTwoVsTwo)
     {
-      _players[2]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 - 100, 660));
-      _players[3]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 100, 600));
       _players[2]->stop();
       _players[3]->stop();
     }
@@ -574,13 +605,11 @@ namespace vl
           case sf::Keyboard::Num1:
             if (scoreUpdated && !didSomeoneWin())
             {
-              std::cout << "hit enter not pause" << std::endl;
               scoreUpdated = false;
             }
             break;
           case sf::Keyboard::P:
 
-            std::cout << "pause while hit enter" << scoreUpdated << std::endl;
             handlePauseEvent();
 
             break;
@@ -678,19 +707,6 @@ namespace vl
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
         _players[1]->handleEvent(vl::Event::RIGHT);
 
-      if (didSomeoneWin())
-      {
-        while (true)
-        {
-
-          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-          {
-            _window->close();
-            break;
-          }
-        }
-      }
-
       if (isTwoVsTwo)
       {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
@@ -704,6 +720,18 @@ namespace vl
           _players[3]->handleEvent(vl::Event::RIGHT);
       }
     }
+    if (didSomeoneWin())
+    {
+      while (true)
+      {
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+          _window->close();
+          break;
+        }
+      }
+    }
   }
 
   void Volley::onNotify(const vl::Event &event)
@@ -714,13 +742,13 @@ namespace vl
       {
         _scores[1]++;
         latest_score = 1;
-        TeamPlayerServe = !TeamPlayerServe;
+        TeamPlayerServe2 = !TeamPlayerServe2;
       }
       else
       {
         _scores[0]++;
         latest_score = 0;
-        TeamPlayerServe = !TeamPlayerServe;
+        TeamPlayerServe1 = !TeamPlayerServe1;
       }
 
       _score->update(_scores[0], _scores[1]);

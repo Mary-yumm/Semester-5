@@ -47,12 +47,10 @@ namespace vl
 
     if (serve_side == 0)
     {
-      std::cout << "left side" << std::endl;
       _position = sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175); // Set internal position for Player 1 (left side)
     }
     else
     {
-      std::cout << "right side" << std::endl;
       _position = sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175); // Set internal position for Player 2 (right side)
     }
 
