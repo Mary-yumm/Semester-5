@@ -27,31 +27,10 @@ SOFTWARE. */
 #include <X11/Xlib.h>
 #include <thread>
 #include <iostream>
+#include <random>
 
 namespace vl
 {
-
-  static void _render(vl::Volley *app)
-  {
-    sf::Context context; // Create an OpenGL context for this thread
-
-    while (!app->gameEnded)
-    {
-      app->render();
-    }
-
-    std::cout << "Render thread stopped." << std::endl;
-  }
-
-  static void _update(vl::Volley *app)
-  {
-    while (!app->gameEnded)
-    {
-      app->update();
-    }
-
-    std::cout << "Update thread stopped." << std::endl;
-  }
 
   Volley::Volley(bool isTwoVsTwo) : pauseMenu(VL_WINDOW_WIDTH, VL_WINDOW_HEIGHT)
   {
@@ -222,6 +201,27 @@ namespace vl
     _scores[1] = 0u;
     _lastPlayer = 0u;
     reset();
+    // Randomly decide which player gets the ball
+    std::random_device rd;                     // Seed
+    std::mt19937 gen(rd());                    // Random number generator
+    std::uniform_int_distribution<> dis(0, 1); // Random distribution: 0 or 1
+
+    int serve_side = dis(gen); // Generate 0 or 1
+
+    if (serve_side == 0)
+    {
+      std::cout << "left" << std::endl;
+      // Position the ball for Player 1 (left side)
+      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 175)); // Left player's position
+    }
+    else
+    {
+      std::cout << "right" << std::endl;
+
+      // Position the ball for Player 2 (right side)
+      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 50, 175)); // Right player's position
+    }
+    _ball->handleEvent(vl::Event::LEFT);
   }
 
   void Volley::changeGameMode()
@@ -460,10 +460,7 @@ namespace vl
     {
       _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 50, 175)); // Position on Player 2's side
     }
-    else // default position
-    {
-      _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 150)); // Neutral position
-    }
+
     _ball->bounce_p1 = 0; // Reset bounce counts
     _ball->bounce_p2 = 0;
     _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 660));
@@ -599,7 +596,6 @@ namespace vl
         }
         else
         {
-
           switch (event.key.code)
           {
           case sf::Keyboard::P:
@@ -634,11 +630,11 @@ namespace vl
           case sf::Keyboard::Escape:
             _window->close();
             break;
-          case sf::Keyboard::Space:
-            _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
-            _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
-            _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
-            break;
+          // case sf::Keyboard::Space:
+          //   _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
+          //   _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
+          //   _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
+          //   break;
 
           default:
             break;

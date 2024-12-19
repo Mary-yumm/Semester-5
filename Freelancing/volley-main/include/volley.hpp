@@ -102,10 +102,7 @@ namespace vl
     sf::Text winMessage;
     sf::Text returnMessage;
     bool isBallStatic = true; // Ball starts static
-
-  public:
     bool isTwoVsTwo;
-
     bool gameEnded;
   };
 }

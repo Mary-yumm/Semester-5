@@ -25,6 +25,7 @@ SOFTWARE. */
 #include "utils.hpp"
 #include "constants.hpp"
 #include <iostream>
+#include <random>
 
 namespace vl
 {
@@ -36,6 +37,27 @@ namespace vl
     bounce_p2 = 0;
     bounce_p3 = 0;
     bounce_p4 = 0;
+
+    // Randomly decide which player gets the ball
+    std::random_device rd;                     // Seed
+    std::mt19937 gen(rd());                    // Random number generator
+    std::uniform_int_distribution<> dis(0, 1); // Random distribution: 0 or 1
+
+    int serve_side = dis(gen); // Generate 0 or 1
+
+    if (serve_side == 0)
+    {
+      std::cout << "left side" << std::endl;
+      _position = sf::Vector2f(VL_WINDOW_WIDTH / 4, 175); // Set internal position for Player 1 (left side)
+    }
+    else
+    {
+      std::cout << "right side" << std::endl;
+      _position = sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 50, 175); // Set internal position for Player 2 (right side)
+    }
+
+    // Set the sprite's position based on the updated internal position
+    _sprite.setPosition(_position);
   }
 
   bool Ball::isCollidingWith(const IPhysicalObject &object) const
