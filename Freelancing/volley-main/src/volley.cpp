@@ -212,14 +212,14 @@ namespace vl
     {
       std::cout << "left" << std::endl;
       // Position the ball for Player 1 (left side)
-      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 175)); // Left player's position
+      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175)); // Left player's position
     }
     else
     {
       std::cout << "right" << std::endl;
 
       // Position the ball for Player 2 (right side)
-      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 50, 175)); // Right player's position
+      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175)); // Right player's position
     }
     _ball->handleEvent(vl::Event::LEFT);
   }
@@ -433,6 +433,8 @@ namespace vl
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
       reset();
+      TeamPlayerServe = !TeamPlayerServe;
+
       return;
     }
 
@@ -447,6 +449,7 @@ namespace vl
       _score->update(_scores[0], _scores[1]);
       _sounds[0]->play();
       reset();
+      TeamPlayerServe = !TeamPlayerServe;
     }
   }
 
@@ -454,11 +457,25 @@ namespace vl
   {
     if (latest_score == 0) // Player 1 (left side) is leading
     {
-      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 175)); // Position on Player 1's side
+      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175)); // Position on Player 1's side
+
+      if (TeamPlayerServe)
+      { //1
+      }
+      else // 0
+      {
+      }
     }
     else if (latest_score == 1) // Player 2 (right side) is leading
     {
-      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 + 50, 175)); // Position on Player 2's side
+      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175)); // Position on Player 2's side
+
+      if (TeamPlayerServe) // 1
+      {
+      }
+      else // 0
+      {
+      }
     }
 
     _ball->bounce_p1 = 0; // Reset bounce counts
@@ -630,11 +647,11 @@ namespace vl
           case sf::Keyboard::Escape:
             _window->close();
             break;
-          // case sf::Keyboard::Space:
-          //   _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
-          //   _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
-          //   _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
-          //   break;
+            // case sf::Keyboard::Space:
+            //   _ball->setPosition(sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 0));
+            //   _players[0]->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, 0));
+            //   _players[1]->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, 0));
+            //   break;
 
           default:
             break;
@@ -697,11 +714,13 @@ namespace vl
       {
         _scores[1]++;
         latest_score = 1;
+        TeamPlayerServe = !TeamPlayerServe;
       }
       else
       {
         _scores[0]++;
         latest_score = 0;
+        TeamPlayerServe = !TeamPlayerServe;
       }
 
       _score->update(_scores[0], _scores[1]);

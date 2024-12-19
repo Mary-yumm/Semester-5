@@ -104,6 +104,7 @@ namespace vl
     bool isBallStatic = true; // Ball starts static
     bool isTwoVsTwo;
     bool gameEnded;
+    bool TeamPlayerServe=false;
   };
 }
 
