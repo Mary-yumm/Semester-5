@@ -564,6 +564,13 @@ namespace vl
               pause = false;
               scoreUpdated = false;
             }
+            break;
+          case sf::Keyboard::P:
+            if (scoreUpdated && !didSomeoneWin())
+            {
+              handlePauseEvent();
+            }
+            break;
           case sf::Keyboard::Up: // Navigate up in the menu
             pauseMenu.moveUp();
             break;

@@ -57,7 +57,7 @@ namespace vl
   {
     this->scoreUpdated = true;
     this->gameEnded = false;
-    this->pause = true;
+    this->pause = false;
     this->latest_score = -1;
 
     // XInitThreads();
@@ -212,7 +212,7 @@ namespace vl
   {
     this->scoreUpdated = true;
     this->gameEnded = false;
-    this->pause = true;
+    this->pause = false;
     this->latest_score = -1;
     // Initialize score value
     delete _score;
@@ -262,7 +262,7 @@ namespace vl
 
     _window->clear();
 
-    if (pause && !scoreUpdated)
+    if (pause)
     {
       pauseMenu.draw(*_window);
     }
@@ -307,7 +307,7 @@ namespace vl
       _window->draw(player2Message);
 
       // Display "Hit 1 to start" only if pause is due to a score update
-      if (pause && scoreUpdated && !didSomeoneWin())
+      if (scoreUpdated && !didSomeoneWin())
       {
         _window->draw(startMessage);
       }
@@ -481,7 +481,6 @@ namespace vl
     _players[0]->stop();
     _players[1]->stop();
 
-    this->pause = true;
     this->scoreUpdated = true;
     if (_scores[0] >= WINNING_SCORE || _scores[1] >= WINNING_SCORE)
     {
@@ -554,16 +553,23 @@ namespace vl
     {
       if (event.type == sf::Event::KeyPressed)
       {
-        if (pause)
+        if (pause || scoreUpdated)
         {
           switch (event.key.code)
           {
           case sf::Keyboard::Num1:
             if (scoreUpdated && !didSomeoneWin())
             {
-              pause = false;
+              std::cout << "hit enter not pause" << std::endl;
               scoreUpdated = false;
             }
+            break;
+          case sf::Keyboard::P:
+
+            std::cout << "pause while hit enter" << scoreUpdated << std::endl;
+            handlePauseEvent();
+
+            break;
           case sf::Keyboard::Up: // Navigate up in the menu
             pauseMenu.moveUp();
             break;
@@ -593,6 +599,7 @@ namespace vl
         }
         else
         {
+
           switch (event.key.code)
           {
           case sf::Keyboard::P:
@@ -643,7 +650,7 @@ namespace vl
         _window->close();
     }
 
-    if (!pause)
+    if (!pause && !scoreUpdated)
     {
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
