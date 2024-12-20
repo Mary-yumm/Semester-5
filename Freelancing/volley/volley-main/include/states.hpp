@@ -20,12 +20,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-
 #ifndef VL_STATES_HPP
 #define VL_STATES_HPP
 
-namespace vl {
-  enum class State {
+namespace vl
+{
+  /**
+   * @brief Enum representing different states of the character.
+   *
+   * This enum defines various states that a character can be in during the game.
+   * Each state corresponds to a different action or condition for the character.
+   */
+  enum class State
+  {
     IDLE,
     JUMPING,
     GOING_RIGHT,

@@ -20,23 +20,56 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
+/**
+ * @file main.cpp
+ * @brief Entry point and main logic for the Volleyball Game Menu application.
+ */
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Menu.hpp"
 #include "volley.hpp"
 #include <memory>
 
+/**
+ * @enum AppState
+ * @brief Represents the current state of the application.
+ */
 enum class AppState
 {
-    MENU,
-    GAME,
-    INSTRUCTIONS,
-    GAME_MODE_SELECTION
+    MENU,               ///< Main menu state.
+    GAME,               ///< Game state.
+    INSTRUCTIONS,       ///< Instructions screen state.
+    GAME_MODE_SELECTION ///< Game mode selection screen state.
 };
 
+/**
+ * @brief Displays the instructions screen.
+ * @param window The SFML window where the instructions are rendered.
+ */
 void showInstructions(sf::RenderWindow &window);
+
+/**
+ * @brief Displays the game mode selection screen.
+ * @param window The SFML window where the game mode selection is rendered.
+ * @param isTwoVsTwo A reference to a boolean that tracks whether the game mode is 2v2.
+ */
 void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo);
+
+/**
+ * @brief Displays the winning screen.
+ * @param winner The ID of the winning player.
+ * @param window The SFML window where the winning screen is rendered.
+ * @param font The font used for rendering text.
+ */
 void showWinningScreen(unsigned int winner, sf::RenderWindow &window, sf::Font &font);
+
+/**
+ * @brief Main function for the Volleyball Game Menu application.
+ * @param argc Argument count.
+ * @param argv Argument vector.
+ * @return Exit status.
+ */
 
 int main(int argc, char **argv)
 {

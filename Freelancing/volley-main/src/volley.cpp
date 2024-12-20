@@ -61,7 +61,7 @@ namespace vl
     }
 
     // Create ball sprite and set its properties.
-    _ball = new vl::Ball(VL_ASSET_IMG_BALL, sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 200), VL_BALL_FRICTION);
+    _ball = new vl::Ball(VL_ASSET_IMG_BALL, sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 200), VL_BALL_FRICTION, _lastPlayer);
     _ball->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH - VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
     _ball->setObserver(this);
 
@@ -327,6 +327,8 @@ namespace vl
       {
         _window->draw(startMessage);
       }
+      if (isBallStatic)
+        _window->draw(_ball->arrowSprite); // Draw the arrow sprite
     }
 
     // Display the win message if someone has won.
@@ -510,10 +512,18 @@ namespace vl
    */
   void Volley::reset()
   {
+    delete _ball;
+    _ball = new vl::Ball(VL_ASSET_IMG_BALL, sf::Vector2f(5 * VL_WINDOW_WIDTH / 8, 200), VL_BALL_FRICTION, _lastPlayer);
+    _ball->setPlayableArea(sf::FloatRect(VL_MARGIN, VL_MARGIN, VL_WINDOW_WIDTH - VL_MARGIN, VL_WINDOW_HEIGHT - VL_MARGIN));
+    _ball->setObserver(this);
+
     if (latest_score == 0) // Player 1 (left side) is leading
     {
-      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175)); // Position on Player 1's side
+      _ball->setPosition(sf::Vector2f(VL_WINDOW_WIDTH / 4, VL_WINDOW_HEIGHT / 2 - 75)); // Position on Player 1's side
 
+      _ball->arrowSprite.setPosition(VL_WINDOW_WIDTH / 4,
+                                     VL_WINDOW_HEIGHT / 2 + 75); // Adjust position
+      _ball->side = 0u;
       if (isTwoVsTwo)
       {
         if (TeamPlayerServe1)
@@ -532,7 +542,12 @@ namespace vl
     }
     else if (latest_score == 1) // Player 2 (right side) is leading
     {
-      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175)); // Position on Player 2's side
+      _ball->setPosition(sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, VL_WINDOW_HEIGHT / 2 - 75)); // Position on Player 2's side
+
+      _ball->arrowSprite.setPosition(3 * VL_WINDOW_WIDTH / 4,
+                                     VL_WINDOW_HEIGHT / 2 + 75); // Adjust position
+
+      _ball->side = 1u;
       if (isTwoVsTwo)
       {
         if (TeamPlayerServe2) // 1
@@ -552,6 +567,8 @@ namespace vl
 
     _ball->bounce_p1 = 0; // Reset bounce counts
     _ball->bounce_p2 = 0;
+    _ball->bounce_p3 = 0;
+    _ball->bounce_p4 = 0;
 
     // Reset player positions for non-2v2 mode
 
@@ -726,34 +743,47 @@ namespace vl
             break;
           case sf::Keyboard::W:
             // Player 1 jump event
+            if(!isBallStatic)
             _players[0]->handleEvent(vl::Event::JUMP);
             break;
           case sf::Keyboard::I:
             // Player 2 jump event
+            if(!isBallStatic)
             _players[1]->handleEvent(vl::Event::JUMP);
             break;
           case sf::Keyboard::G:
             // Ball drop event
-            isBallStatic = false;
+            if (isBallStatic)
+            {
+              isBallStatic = false;
+              _ball->bounce_serving();
+            }
+
             break;
           case sf::Keyboard::V:
             // Ball move left event
             if (isBallStatic)
+            {
+              //_ball->rotateLeft();
               _ball->handleEvent(vl::Event::LEFT);
+            }
             break;
           case sf::Keyboard::B:
             // Ball move right event
             if (isBallStatic)
+            {
+              //_ball->rotateRight();
               _ball->handleEvent(vl::Event::RIGHT);
+            }
             break;
           case sf::Keyboard::T:
             // Player 3 jump event in two-player mode
-            if (isTwoVsTwo)
+            if (isTwoVsTwo && !isBallStatic)
               _players[2]->handleEvent(vl::Event::JUMP);
             break;
           case sf::Keyboard::Up:
             // Player 4 jump event in two-player mode
-            if (isTwoVsTwo)
+            if (isTwoVsTwo && !isBallStatic)
               _players[3]->handleEvent(vl::Event::JUMP);
             break;
 
@@ -776,7 +806,7 @@ namespace vl
 
     // Handle real-time key presses during active gameplay
 
-    if (!pause && !scoreUpdated)
+    if (!pause && !scoreUpdated && !isBallStatic)
     {
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -928,4 +958,5 @@ namespace vl
     // If team 0 has a score equal to or greater than the winning score, they are the winner
     return (_scores[0] >= WINNING_SCORE) ? 0 : 1;
   }
+
 }

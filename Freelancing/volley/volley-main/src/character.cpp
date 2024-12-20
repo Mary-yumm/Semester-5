@@ -23,38 +23,64 @@ SOFTWARE. */
 #include "character.hpp"
 #include "constants.hpp"
 
-namespace vl {
-  Character::Character(const char* file, const sf::Vector2f& position, float friction)
-    :Entity(file, position) {
-      _sprite.setOrigin(sf::Vector2f(_texture.getSize() / 2u));
-      _friction = friction;
-    }
+namespace vl
+{
 
-  void Character::handleEvent(vl::Event e) {
-    switch (e) {
-      case Event::RESET:
-        _state = vl::State::IDLE;
-        reset();
+  /**
+   * @brief Constructor for the Character class.
+   *
+   * Initializes the character with a texture loaded from the specified file, sets its position,
+   * and defines the friction factor. The sprite’s origin is set to the center of the texture.
+   *
+   * @param file The path to the texture file to be used for the character.
+   * @param position The initial position of the character.
+   * @param friction The friction factor applied to the character’s movement.
+   */
+  Character::Character(const char *file, const sf::Vector2f &position, float friction)
+      : Entity(file, position)
+  {
+    _sprite.setOrigin(sf::Vector2f(_texture.getSize() / 2u)); ///< Set sprite origin to center of texture
+    _friction = friction;                                     ///< Set friction for character's movement
+  }
+
+  /**
+   * @brief Handles input events to update the character’s state and perform actions.
+   *
+   * Depending on the event, the character’s state is updated and appropriate actions are taken.
+   * This includes resetting the character, jumping, and moving left or right.
+   *
+   * @param e The event to handle (e.g., RESET, JUMP, RIGHT, LEFT).
+   */
+  void Character::handleEvent(vl::Event e)
+  {
+    switch (e)
+    {
+    case Event::RESET:
+      _state = vl::State::IDLE; ///< Set character state to IDLE
+      reset();                  ///< Reset character attributes (e.g., position)
       break;
 
-      case Event::JUMP:
-        if (_state != vl::State::JUMPING) {
-          _state = vl::State::JUMPING;
-          jump(VL_JUMP_STEP);
-        }
+    case Event::JUMP:
+      if (_state != vl::State::JUMPING)
+      {                              ///< Ensure the character is not already jumping
+        _state = vl::State::JUMPING; ///< Set state to JUMPING
+        jump(VL_JUMP_STEP);          ///< Execute jump with the specified jump step
+      }
       break;
 
-      case Event::RIGHT:
-        _state = vl::State::GOING_RIGHT;
-        move(sf::Vector2f(VL_MOVE_STEP, 0.0f));
+    case Event::RIGHT:
+      _state = vl::State::GOING_RIGHT;        ///< Set state to GOING_RIGHT
+      move(sf::Vector2f(VL_MOVE_STEP, 0.0f)); ///< Move the character to the right
       break;
 
-      case Event::LEFT:
-        _state = vl::State::GOING_LEFT;
-        move(sf::Vector2f(-VL_MOVE_STEP, 0.0f));
+    case Event::LEFT:
+      _state = vl::State::GOING_LEFT;          ///< Set state to GOING_LEFT
+      move(sf::Vector2f(-VL_MOVE_STEP, 0.0f)); ///< Move the character to the left
       break;
 
-      default:  break;
+    default:
+      break; ///< No action for other events
     }
   }
+
 }

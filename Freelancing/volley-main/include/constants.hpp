@@ -58,7 +58,7 @@ SOFTWARE. */
 
 // Movements
 #define VL_JUMP_STEP  8.0f
-#define VL_MOVE_STEP 13.0f
+#define VL_MOVE_STEP 15.0f
 #define VL_MOVE_LEFT (-VL_MOVE_STEP)
 #define VL_MOVE_RIGHT (VL_MOVE_STEP)
 

@@ -50,7 +50,7 @@ namespace vl
      * @param position Initial position of the ball in the game world.
      * @param friction Friction value that affects the ball's movement.
      */
-    Ball(const char *file, const sf::Vector2f &position, float friction);
+    Ball(const char *file, const sf::Vector2f &position, float friction, unsigned int &lastPlayer);
 
     /**
      * @brief Adds an observer to the ball.
@@ -91,6 +91,8 @@ namespace vl
      */
     void bounce(const IPhysicalObject &object);
 
+    void bounce_serving();
+
     /**
      * @brief Handles an event affecting the ball.
      *
@@ -110,16 +112,23 @@ namespace vl
      */
     void update(float dt);
 
+    void rotateLeft();
+    void rotateRight();
+    void updateBallPosition();
+
   private:
     IObserver *_observer; ///< Pointer to the observer that will be notified of events.
     float preVelX;        ///< The ball's previous velocity along the X-axis.
     float preVelY;        ///< The ball's previous velocity along the Y-axis.
 
   public:
-    int bounce_p1; ///< Bounce counter for the first condition.
-    int bounce_p2; ///< Bounce counter for the second condition.
-    int bounce_p3; ///< Bounce counter for the third condition.
-    int bounce_p4; ///< Bounce counter for the fourth condition.
+    int bounce_p1;            ///< Bounce counter for the first condition.
+    int bounce_p2;            ///< Bounce counter for the second condition.
+    int bounce_p3;            ///< Bounce counter for the third condition.
+    int bounce_p4;            ///< Bounce counter for the fourth condition.
+    sf::Texture arrowTexture; ///< Texture for the arrow
+    sf::Sprite arrowSprite;   ///< Sprite for the arrow
+    unsigned int side;
   };
 };
 

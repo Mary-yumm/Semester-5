@@ -20,12 +20,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-
 #ifndef VL_EVENTS_HPP
 #define VL_EVENTS_HPP
 
-namespace vl {
-  enum class Event {
+namespace vl
+{
+  /**
+   * @brief Enum representing different game events.
+   *
+   * This enum defines various events that can occur in the game, such as player commands
+   * and dynamic events related to the ball's behavior.
+   */
+  enum class Event
+  {
     // Commands
     JUMP,
     RESET,

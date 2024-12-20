@@ -26,6 +26,7 @@ SOFTWARE. */
 #include "constants.hpp"
 #include <iostream>
 #include <random>
+#include "assets.hpp"
 
 namespace vl
 {
@@ -38,14 +39,32 @@ namespace vl
    * @param position The initial position of the ball.
    * @param friction The friction value to apply to the ball's movement.
    */
-  Ball::Ball(const char *file, const sf::Vector2f &position, float friction) : Entity(file, position)
+  Ball::Ball(const char *file, const sf::Vector2f &position, float friction, unsigned int &lastPlayer) : Entity(file, position)
   {
     _sprite.setOrigin(sf::Vector2f(_texture.getSize() / 2u));
+    //_sprite.setOrigin(_texture.getSize().x / 2.0f, _texture.getSize().y);
+
     _friction = friction;
     bounce_p1 = 0;
     bounce_p2 = 0;
     bounce_p3 = 0;
     bounce_p4 = 0;
+    this->side = 0u;
+
+    // Set the arrow sprite texture
+    if (!arrowTexture.loadFromFile(VL_ASSET_IMG_ARROW))
+    {
+      std::cerr << "Error loading arrow image: " << VL_ASSET_IMG_ARROW << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    arrowSprite.setTexture(arrowTexture);
+
+    // Scale the arrow sprite to make it bigger
+    arrowSprite.setScale(0.4f, 0.4f); // Doubles the size of the sprite
+    arrowSprite.rotate(180.0f);
+    // Set the origin to the base of the arrow (assuming the arrow's base is at the bottom center of the texture)
+    // arrowSprite.setOrigin(arrowTexture.getSize().x / 2.0f, arrowTexture.getSize().y);
+    arrowSprite.setOrigin(arrowTexture.getSize().x / 2.0f, 0.0f);
 
     // Randomly decide which player gets the ball
     std::random_device rd;                     // Seed
@@ -53,14 +72,26 @@ namespace vl
     std::uniform_int_distribution<> dis(0, 1); // Random distribution: 0 or 1
 
     int serve_side = dis(gen); // Generate 0 or 1
-
+    // arrowSprite.setOrigin(arrowTexture.getSize().x / 2, arrowTexture.getSize().y / 2);
     if (serve_side == 0)
     {
-      _position = sf::Vector2f(VL_WINDOW_WIDTH / 4 + 150, 175); // Set internal position for Player 1 (left side)
+      _position = sf::Vector2f(VL_WINDOW_WIDTH / 4, VL_WINDOW_HEIGHT / 2 - 75); // Set internal position for Player 1 (left side)
+      // Set the position of the arrow sprite
+      arrowSprite.setPosition(VL_WINDOW_WIDTH / 4,
+                              VL_WINDOW_HEIGHT / 2 + 75); // Adjust position to center
+
+      lastPlayer = 0u;
+      this->side = 0u;
     }
     else
     {
-      _position = sf::Vector2f(3 * VL_WINDOW_WIDTH / 4 - 150, 175); // Set internal position for Player 2 (right side)
+      _position = sf::Vector2f(3 * VL_WINDOW_WIDTH / 4, VL_WINDOW_HEIGHT / 2 - 75); // Set internal position for Player 2 (right side)
+
+      // Set the position of the arrow sprite
+      arrowSprite.setPosition(3 * VL_WINDOW_WIDTH / 4,
+                              VL_WINDOW_HEIGHT / 2 + 75); // Adjust position to center
+      lastPlayer = 1u;
+      this->side = 1u;
     }
 
     // Set the sprite's position based on the updated internal position
@@ -87,14 +118,52 @@ namespace vl
    * based on the object's position and the ball's current position.
    * @param object The physical object the ball is bouncing off of.
    */
+
   void Ball::bounce(const IPhysicalObject &object)
   {
+    // Player interaction bounce logic
     const sf::Vector2f &v = vl::utils::nv(_position, (object.getPosition() - sf::Vector2f(0.0f, 65.0f)));
 
-    // Use larger bounds for testing
-    const float bounceFactor = 3.0f;              // Increase further if necessary
-    _acceleration.x = bounceFactor * 10.0f * v.x; // Remove clamping temporarily
-    _acceleration.y = bounceFactor * 10.0f * v.y; // Remove clamping temporarily
+    const float bounceFactor = 3.0f; // Player bounce factor
+    _acceleration.x = bounceFactor * 10.0f * v.x;
+    _acceleration.y = bounceFactor * 10.0f * v.y;
+  }
+
+  void Ball::bounce_serving()
+  {
+    // Arrow rotation in degrees
+    float rotation = arrowSprite.getRotation();
+
+    // Map specific angles to reduced velocities
+    if (rotation == 90.0f)
+      _velocity = sf::Vector2f(-25.0f, 0.0f); // Straight left (opposite of right)
+    else if (rotation == 105.0f)
+      _velocity = sf::Vector2f(-23.5f, -6.25f); // Slight left up
+    else if (rotation == 120.0f)
+      _velocity = sf::Vector2f(-21.25f, -12.5f);
+    else if (rotation == 135.0f)
+      _velocity = sf::Vector2f(-18.75f, -18.75f);
+    else if (rotation == 150.0f)
+      _velocity = sf::Vector2f(-12.5f, -21.25f);
+    else if (rotation == 165.0f)
+      _velocity = sf::Vector2f(-6.25f, -23.75f);
+    else if (rotation == 180.0f)
+      _velocity = sf::Vector2f(0.0f, -25.0f); // Straight up
+    else if (rotation == 195.0f)
+      _velocity = sf::Vector2f(6.25f, -23.75f); // Slight right up
+    else if (rotation == 210.0f)
+      _velocity = sf::Vector2f(12.5f, -21.25f);
+    else if (rotation == 225.0f)
+      _velocity = sf::Vector2f(18.75f, -18.75f);
+    else if (rotation == 240.0f)
+      _velocity = sf::Vector2f(21.25f, -12.5f);
+    else if (rotation == 255.0f)
+      _velocity = sf::Vector2f(23.75f, -6.25f);
+    else if (rotation == 270.0f)
+      _velocity = sf::Vector2f(25.0f, 0.0f); // Straight right (opposite of left)
+
+    // Debug: Print the selected velocity (optional)
+    std::cout << "Rotation: " << rotation << " -> Velocity: (" << _velocity.x << ", " << _velocity.y << ")\n";
   }
 
   /**
@@ -129,6 +198,7 @@ namespace vl
    */
   void Ball::handleEvent(vl::Event e)
   {
+    float currentRotation = arrowSprite.getRotation();
     switch (e)
     {
     case Event::RESET:
@@ -136,37 +206,76 @@ namespace vl
       reset();
       break;
 
-    case Event::JUMP:
-      if (_state != vl::State::JUMPING)
-      {
-        _state = vl::State::JUMPING;
-        jump(VL_JUMP_STEP);
-      }
-      break;
+      // case Event::JUMP:
+      //   if (_state != vl::State::JUMPING)
+      //   {
+      //     _state = vl::State::JUMPING;
+      //     jump(VL_JUMP_STEP);
+      //   }
+      //   break;
 
     case Event::RIGHT:
-      if (_area.contains(_position + sf::Vector2f(VL_MOVE_STEP, 0.0f)))
+      if (this->side == 0u)
       {
-        _position.x += VL_MOVE_STEP; // Move directly to the right
-        setPosition(_position);      // Update the sprite's position
+        if (currentRotation < 270)
+        {
+          _position.x += VL_MOVE_STEP + 10; // Move directly to the right
+          _position.y += VL_MOVE_STEP + 10; // Move directly to the right
+          setPosition(_position);           // Update the sprite's position
+
+          arrowSprite.rotate(15.0f); // Rotate the arrow clockwise by 15 degrees
+          _sprite.rotate(15.0f);
+        }
       }
+      else
+      {
+
+        if (currentRotation < 180)
+        {
+
+          _position.x += VL_MOVE_STEP + 10; // Move directly to the right
+          _position.y -= VL_MOVE_STEP + 10; // Move directly to the right
+          setPosition(_position);           // Update the sprite's position
+
+          arrowSprite.rotate(15.0f); // Rotate the arrow clockwise by 15 degrees
+          _sprite.rotate(15.0f);
+        }
+      }
+
       break;
 
     case Event::LEFT:
-
-      if (_area.contains(_position + sf::Vector2f(-VL_MOVE_STEP, 0.0f)))
+      if (this->side == 0u)
+      {
+        if (currentRotation > 180)
+        {
+          _position.x -= VL_MOVE_STEP + 10; // Move directly to the left
+          _position.y -= VL_MOVE_STEP + 10; // Move directly to the left
+          setPosition(_position);           // Update the sprite's position
+          arrowSprite.rotate(-15.0f);       // Rotate the arrow counterclockwise by 15 degrees
+          _sprite.rotate(-15.0f);
+        }
+      }
+      else
       {
 
-        _position.x -= VL_MOVE_STEP; // Move directly to the left
-        setPosition(_position);      // Update the sprite's position
-      }
+        if (currentRotation > 90 && currentRotation <= 180)
+        {
 
+          _position.x -= VL_MOVE_STEP + 10; // Move directly to the left
+          _position.y += VL_MOVE_STEP + 10; // Move directly to the left
+          setPosition(_position);           // Update the sprite's position
+          arrowSprite.rotate(-15.0f);       // Rotate the arrow counterclockwise by 15 degrees
+          _sprite.rotate(-15.0f);
+        }
+      }
       break;
 
     default:
       break;
     }
     _sprite.setPosition(_position);
+    std::cout << "curr: " << currentRotation << std::endl;
   }
 
   /**

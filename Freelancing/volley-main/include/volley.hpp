@@ -184,6 +184,7 @@ namespace vl
     bool gameEnded;                                            ///< Flag indicating whether the game has ended.
     bool TeamPlayerServe1;                                     ///< Flag indicating whether player 1 is serving.
     bool TeamPlayerServe2;                                     ///< Flag indicating whether player 2 is serving.
+    
   };
 }
 

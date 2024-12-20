@@ -20,24 +20,42 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
+
 #ifndef VL_SOUND_HPP
 #define VL_SOUND_HPP
 
 #include <SFML/Audio.hpp>
 
 namespace vl {
+
+/**
+ * @brief A class to handle sound playback.
+ * 
+ * The Sound class provides functionality to load and play sounds using 
+ * the SFML library. The constructor loads a sound file, and the `play` 
+ * method plays the sound.
+ */
   class Sound {
   public:
     /**
-     * Constructor
-     * @param image file
-     * @param intial position
+     * @brief Construct a new Sound object.
+     * 
+     * Initializes the sound object by loading a sound file into the sound buffer.
+     * 
+     * @param file The path to the sound file to be loaded.
      */
     Sound(const char* file);
+
+    /**
+     * @brief Play the sound.
+     * 
+     * Plays the sound that has been loaded into the sound buffer.
+     */
     void play();
+
   private:
-    sf::Sound _sound;
-    sf::SoundBuffer _buffer;
+    sf::Sound _sound; ///< SFML sound object used to play the sound.
+    sf::SoundBuffer _buffer; ///< SFML buffer used to store the sound data.
   };
 };
 

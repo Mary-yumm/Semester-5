@@ -68,6 +68,9 @@ SOFTWARE. */
  */
 #define VL_ASSET_IMG_PLAYER4 VL_ASSETS_IMG "player4.png"
 
+#define VL_ASSET_IMG_ARROW VL_ASSETS_IMG "arrows.png"
+
+
 /**
  * @def VL_ASSET_IMG_BEACH
  * @brief The path to the image of the beach background.
