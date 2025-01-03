@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "153163378891",
+    "project_id": "paybuddy-4f61c",
+    "storage_bucket": "paybuddy-4f61c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153163378891:android:f523bc4d7f288b3da36b4e",
+        "android_client_info": {
+          "package_name": "com.example.paybuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdpL65unrxSsW02AHZeil0dq0T0jXvrhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
