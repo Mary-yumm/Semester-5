@@ -57,14 +57,6 @@ void showInstructions(sf::RenderWindow &window);
 void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo);
 
 /**
- * @brief Displays the winning screen.
- * @param winner The ID of the winning player.
- * @param window The SFML window where the winning screen is rendered.
- * @param font The font used for rendering text.
- */
-void showWinningScreen(unsigned int winner, sf::RenderWindow &window, sf::Font &font);
-
-/**
  * @brief Main function for the Volleyball Game Menu application.
  * @param argc Argument count.
  * @param argv Argument vector.
@@ -170,7 +162,18 @@ int main(int argc, char **argv)
     return 0;
 }
 
-// Function to display the instructions screen
+/**
+ * @brief Displays the instructions screen with game controls and rules.
+ *
+ * This function shows a screen containing the instructions for the game,
+ * including player controls and basic game rules. The instructions are
+ * displayed in the center of the screen, and the function waits for a
+ * key press before returning to the main menu.
+ *
+ * @param window A reference to the SFML render window used to display the instructions.
+ *
+ * @throws std::runtime_error If the font file cannot be loaded.
+ */
 void showInstructions(sf::RenderWindow &window)
 {
     sf::Font font;
@@ -218,7 +221,17 @@ void showInstructions(sf::RenderWindow &window)
     }
 }
 
-// Function to display the game mode selection screen
+/**
+ * @brief Displays the game mode selection screen and allows the user to choose between game modes.
+ *
+ * This function shows a screen where the user can choose between two game modes:
+ * 1v1 or 2v2. The selected mode is highlighted in red. The function waits for the user
+ * to press Enter to confirm their selection.
+ *
+ * @param window A reference to the SFML render window used to display the game mode selection screen.
+ * @param isTwoVsTwo A reference to a boolean that is set to true if the 2v2 mode is selected,
+ *                   and false if the 1v1 mode is selected.
+ */
 void selectGameMode(sf::RenderWindow &window, bool &isTwoVsTwo)
 {
     sf::Font font;

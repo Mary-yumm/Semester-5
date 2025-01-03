@@ -129,6 +129,13 @@ namespace vl
     _acceleration.y = bounceFactor * 10.0f * v.y;
   }
 
+  /**
+   * @brief Adjusts the ball's velocity based on the serving arrow's rotation.
+   *
+   * This function determines the ball's velocity when serving, using the current
+   * rotation of the serving arrow to select specific velocity values that map
+   * to different angles. It covers a range of 90° to 270° with mapped velocities.
+   */
   void Ball::bounce_serving()
   {
     // Arrow rotation in degrees
@@ -162,8 +169,7 @@ namespace vl
     else if (rotation == 270.0f)
       _velocity = sf::Vector2f(25.0f, 0.0f); // Straight right (opposite of left)
 
-    // Debug: Print the selected velocity (optional)
-    std::cout << "Rotation: " << rotation << " -> Velocity: (" << _velocity.x << ", " << _velocity.y << ")\n";
+    //std::cout << "Rotation: " << rotation << " -> Velocity: (" << _velocity.x << ", " << _velocity.y << ")\n";
   }
 
   /**
@@ -275,7 +281,6 @@ namespace vl
       break;
     }
     _sprite.setPosition(_position);
-    std::cout << "curr: " << currentRotation << std::endl;
   }
 
   /**

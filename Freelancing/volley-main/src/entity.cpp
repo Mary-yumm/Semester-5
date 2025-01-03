@@ -61,22 +61,24 @@ namespace vl
     _position.x += _velocity.x;
     _position.y += _velocity.y;
 
-    // // A DEPLACER DANS BOUNCE ?
+    // Apply friction to horizontal velocity
     if (std::abs(_velocity.x) != 0.0f)
       _velocity.x *= _friction;
     if (std::abs(_velocity.x) < 0.01f)
       _velocity.x = 0.0f;
 
+    // Reset acceleration
+
     _acceleration.y = 0.0f;
     _acceleration.x = 0.0f;
 
-    // Is in the air
+    // Apply gravity if the entity is in the air
     if (_position.y < VL_FLOOR - (size.y / 2))
     {
       _velocity.y += VL_GRAVITY * dt;
     }
 
-    // Rebound
+    // Handle rebound if the entity hits the floor
     else if (_position.y > VL_FLOOR - (size.y / 2))
     {
       if (_velocity.y > 0.0f)

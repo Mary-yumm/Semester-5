@@ -704,6 +704,11 @@ namespace vl
             handlePauseEvent();
 
             break;
+          case sf::Keyboard::Escape:
+            // exit
+            std::exit(0); // Terminates the entire program
+
+            break;
           case sf::Keyboard::Up: // Navigate up in the menu
             pauseMenu.moveUp();
             break;
@@ -743,13 +748,13 @@ namespace vl
             break;
           case sf::Keyboard::W:
             // Player 1 jump event
-            if(!isBallStatic)
-            _players[0]->handleEvent(vl::Event::JUMP);
+            if (!isBallStatic)
+              _players[0]->handleEvent(vl::Event::JUMP);
             break;
           case sf::Keyboard::I:
             // Player 2 jump event
-            if(!isBallStatic)
-            _players[1]->handleEvent(vl::Event::JUMP);
+            if (!isBallStatic)
+              _players[1]->handleEvent(vl::Event::JUMP);
             break;
           case sf::Keyboard::G:
             // Ball drop event
@@ -788,9 +793,9 @@ namespace vl
             break;
 
           case sf::Keyboard::Escape:
-            // Close the window
+            // exit
+            std::exit(0); // Terminates the entire program
 
-            _window->close();
             break;
 
           default:
